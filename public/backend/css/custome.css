@@ -1,0 +1,232 @@
+.mr5 {
+    margin-right: 5px;
+}
+
+/* * {
+    margin: 0px;
+    padding: 0px;
+} */
+
+
+.err_request_email {
+    margin: 2px 0 10px 0;
+    /* left: -10px; */
+    float: left;
+    margin-left: 10px;
+    color: red;
+    font-style: italic;
+}
+
+.mg12 {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb15 {
+    margin-bottom: 15px;
+}
+
+h5 {
+    text-transform: uppercase;
+    font-weight: normal;
+}
+
+table strong {
+    min-width: 80px;
+    display: inline-block;
+}
+
+
+
+.filter-wrapper .component-filter {
+
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.search-input-form {
+    display: flex;
+}
+
+
+.right-component-filter {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.box .ibox {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.panel-title {
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.panel-description {
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* Ensure Select2 dropdown matches Bootstrap input */
+.select2-container {
+    width: 100% !important;
+    -webkit-text-size-adjust: 100%;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 34px;
+    border-radius: 0;
+    /* Match Bootstrap form-control border color */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 3px 12px;
+    font-size: 14px;
+    color: #676a6c;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+}
+
+.active-bg {
+    background: rgb(182, 182, 111) !important;
+}
+
+.checkBoxItem {
+    width: 15px;
+    height: 15px;
+}
+
+#checkAll {
+    width: 15px;
+    height: 15px;
+}
+
+.meta-title {
+    font-size: 20px;
+    color: #1a0dab;
+    /* margin-bottom: 8px; */
+}
+
+.canonical {
+    color: #059862;
+    margin-bottom: 12px;
+}
+
+.seo-wrapper {
+    margin-top: 25px;
+}
+
+.meta_description-post-catalouge {
+    height: 240px !important;
+
+}
+
+.uk-flex {
+    display: flex;
+}
+
+.uk-flex-inline {
+    display: inline-flex;
+}
+
+/* Alignment
+   ========================================================================== */
+/*
+   * Align items along the main axis of the current line of the flex container
+   * Row: Horizontal
+   */
+.uk-flex-left {
+    justify-content: flex-start;
+}
+
+.uk-flex-center {
+    justify-content: center;
+}
+
+.uk-flex-right {
+    justify-content: flex-end;
+}
+
+.uk-flex-middle {
+    align-items: center;
+}
+
+.uk-flex-between {
+    justify-content: space-between;
+}
+
+.uk-flex-around {
+    justify-content: space-around;
+}
+
+.notice {
+    font-size: 11px;
+    font-style: italic;
+}
+
+
+
+.img.img-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.img-target {
+    cursor: pointer;
+}
+
+
+
+.form-row {
+    position: relative;
+}
+
+/* .form-row {
+    position: relative;
+} */
+
+.input-container {
+    display: flex;
+    /* Use Flexbox for alignment */
+    align-items: center;
+    /* Center items vertically */
+    position: relative;
+}
+
+.baseUrl {
+    position: absolute;
+    left: 3px;
+    /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none;
+    background-color: #f8f8f8;
+    font-size: 18px;
+    /* This can be adjusted */
+    border: 1px solid #e5e6e7;
+    /* Adjust border width and style */
+    /* padding: 0 5px; */
+    /* Optional: Add some padding for better appearance */
+}
+
+input[name=canonical] {
+    color: blue;
+    font-weight: 600;
+
+}
