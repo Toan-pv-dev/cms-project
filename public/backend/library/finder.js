@@ -56,7 +56,8 @@
     HT.multipleUploadCkeditor = () => {
         $(document).on('click', '.multipleUploadImageCkeditor', function (e) {
             let object = $(this)
-            HT.SetupCkFinder2(object, 'Images')
+            let target = object.attr('data-target')
+            HT.SetupCkFinder2(object, 'Images', target)
             e.preventDefault()
 
         })
@@ -75,14 +76,27 @@
         }
         finder.popup();
     }
-    HT.SetupCkFinder2 = (object, type) => {
+    HT.SetupCkFinder2 = (object, type, target) => {
         if (typeof (type) == 'undefined') {
             type = 'Images'
         }
         var finder = new CKFinder();
+        let html = '';
         finder.resourceType = type;
-        finder.selectActionFunction = function (fileUrl, data) {
-            object.val(fileUrl);
+        finder.selectActionFunction = function (fileUrl, data, allFiles) {
+            let html = '';
+            for (let i = 0; i < allFiles.length; i++) {
+                var image = allFiles[i].url;
+                html += '<div style="margin-bottom: 15px; ">' +
+                    '<figure>' +
+                    '<img src="' + image + '" alt="image" style="width:100%">' +
+                    '<figcaption>Nhập mô tả cho ảnh</figcaption>' +
+                    '</figure>' +
+                    '</div>';
+
+            }
+            html += '<p style="clear: both;"></p>';
+            CKEDITOR.instances[target].insertHtml(html)
         }
         finder.popup();
     }

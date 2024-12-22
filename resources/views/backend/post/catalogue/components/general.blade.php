@@ -24,7 +24,7 @@
             <div class="uk-flex uk-flex-middle uk-flex-between">
 
                 <label for="" class="control-label text-left">Nội dung</label>
-                <a href="" class="multipleUploadImageCkeditor"> Upload nhiều hình ảnh</a>
+                <a href="" class="multipleUploadImageCkeditor" data-target="content"> Upload nhiều hình ảnh</a>
             </div>
 
             <textarea type="text" name="content" class="form-control ck-editor" placeholder="" autocomplete="off" id="content"
