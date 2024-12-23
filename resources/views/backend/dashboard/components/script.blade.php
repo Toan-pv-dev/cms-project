@@ -2,6 +2,7 @@
 <script src="{{ asset('backend/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
 <script src="{{ asset('backend/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('backend/library/library.js') }}"></script>
+<script src="{{ asset('backend/plugins/jqueryui/jquery-ui.js') }}"></script>
 
 <script src="{{ asset('backend/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 

@@ -32,6 +32,7 @@
                         @include('backend.post.catalogue.components.general')
                     </div>
                 </div>
+                @include('backend.dashboard.components.album')
                 @include('backend.post.catalogue.components.seo')
             </div>
 

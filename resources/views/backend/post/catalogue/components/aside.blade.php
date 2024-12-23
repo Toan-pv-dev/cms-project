@@ -1,11 +1,13 @@
 <div class="ibox">
+    <div class="ibox-title">
+        <h5>Chọn thư mục cha</h5>
+
+    </div>
     <div class="ibox-content">
         <div class="row ">
             <div class="col-lg-12 mb10">
                 <div class="form-row">
-                    <label class="control-label text-left" for="">Chọn danh mục cha <span
-                            class="text-danger">(*)</span></label><br>
-                    <p><span class="text-danger notice">Chọn Root nêú không tồn tại thư mục cha</span>
+                    <p><span class="text-danger notice">Chọn Root nêú không tồn tại thư mục cha (*)</span>
                     </p>
 
                     <select type="text" name="parent_id" value="{{ old('parent_id', $postCatalogue->name ?? '') }}"

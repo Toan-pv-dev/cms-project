@@ -18,6 +18,7 @@
 <link href="{{ asset('backend/css/animate.css') }}" rel="stylesheet">
 <link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
 <link href="{{ asset('backend/css/custome.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/plugins/jqueryui/jquery-ui.css') }}" rel="stylesheet">
 <!-- Select2 CSS -->
 {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" /> --}}
 

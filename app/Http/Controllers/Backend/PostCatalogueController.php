@@ -5,7 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Services\Interfaces\PostCatalogueServiceInterface as postCatalogueService;
 use App\Http\Requests\StorePostCatalogueRequest;
-use App\Http\Requests\UpdateCatalogueRequest;
+use App\Http\Requests\UpdatePostCatalogueRequest;
 use App\Http\Requests\DeletePostCatalogueRequest;
 use Illuminate\Http\Request;
 use App\Repositories\PostCatalogueRepository as postCatalogueRepository;
@@ -114,13 +114,14 @@ class PostCatalogueController extends Controller
         $config['seo'] = config('apps.postcatalogue');
         $config['method'] = 'update';
         $dropdown = $this->getDropdown();
-
+        $album = json_decode($postCatalogue->album);
         $template = 'backend.post.catalogue.store';
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
             'postCatalogue',
-            'dropdown'
+            'dropdown',
+            'album'
         ));
     }
     public function update(UpdatePostCatalogueRequest $updaterequest, $id)

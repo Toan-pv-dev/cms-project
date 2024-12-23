@@ -77,6 +77,11 @@
             $('#checkAll').prop('checked', allChecked);
         });
     }
+
+    var sortui = () => {
+        $("#sortable").sortable();
+        $("sortable").disableSelection();
+    }
     var changeStatusAll = () => {
         if ($('.changeStatusAllOn, .changeStatusAllOff').length) {
             $(document).on('click', '.changeStatusAllOn, .changeStatusAllOff', function (e) {
@@ -151,6 +156,7 @@
         changeStatus();
         toggleRowBackground();
         changeStatusAll();
+        sortui();
         // Initialize Select2;
     });
 
