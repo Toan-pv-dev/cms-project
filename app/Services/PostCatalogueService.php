@@ -64,17 +64,20 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
     {
         DB::beginTransaction();
         try {
+            // $postCatalogue = $this->postCatalogueRepository->findById($id);
 
             $payload = $request->only($this->payload());
+            // dd($payload);
             $payload['user_id'] = Auth::id();
             $payload['album'] = json_encode($payload['album']);
+            // dd($payload['album']);
             // dd($payload);
             $postCatalogue = $this->postCatalogueRepository->create($payload);
             if ($postCatalogue->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
                 $payloadLanguage['language_id'] = $this->currentLanguage();
                 $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
-                $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
+                $payloadLanguage['canonical'] =  Str::slug($payloadLanguage['canonical']);
                 $translate = $this->postCatalogueRepository->createTranslatePivot($postCatalogue, $payloadLanguage);
             }
             $this->nestedSet->Get();
@@ -98,8 +101,10 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
             $postCatalogue = $this->postCatalogueRepository->findById($id);
             // dd($postCatalogue);
             $payload = $request->only($this->payload());
+
             $payload['user_id'] = Auth::id();
             $payload['album'] = json_encode($payload['album']);
+            dd($payload['album']);
 
             // dd($payload);
             $flag = $this->postCatalogueRepository->update($id, $payload);

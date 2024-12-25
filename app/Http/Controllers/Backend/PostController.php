@@ -33,25 +33,16 @@ class PostCatalogueController extends Controller
         );
         $this->language = $this->currentLanguage();
     }
-
     private function getDropdown()
     {
         return $this->nestedset->Dropdown();
     }
-
     public function index(Request $request)
     {
-
-
-
-        // dd(config('apps.usercatalogue'));
         $config = [
             'js' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-
-
-
             ],
             'css' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
@@ -59,17 +50,9 @@ class PostCatalogueController extends Controller
 
             ]
         ];
-        // echo 1;
-        // die();
         $config['seo'] = config('apps.postcatalogue');
-        // dd($config['seo']);
-        // echo 1;
-        // die();
         $postCatalogues = $this->postCatalogueService->paginate($request);
-        // dd($users);
-
         $template = 'backend.post.catalogue.index';
-
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
@@ -77,7 +60,6 @@ class PostCatalogueController extends Controller
 
         ));
     }
-
 
     public function create()
     {
@@ -96,13 +78,11 @@ class PostCatalogueController extends Controller
     }
     public function store(StorePostCatalogueRequest $storePostCatalogueRequest)
     {
-        // dd($storePostCatalogueRequest->all());
 
         if ($this->postCatalogueService->create($storePostCatalogueRequest)) {
             flash()->success('Thêm bản ghi thành công');
             return redirect()->route('post.catalogue.index');
         }
-
         flash()->error('Thêm bản ghi không thành công');
         return redirect()->route('post.catalogue.index');
     }
@@ -131,13 +111,11 @@ class PostCatalogueController extends Controller
             flash()->success('Cap nhat ban ghi thanh cong');
             return redirect()->route('post.catalogue.index');
         }
-
         return redirect()->route('post.catalouge.index')->with('error', 'Thêm mới bản ghi không thành công');
     }
     public function delete($id)
     {
         $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
-
         $config['seo'] = config('apps.postcatalogue');
         $config['method'] = 'delete';
         // dd($postCatalogue);

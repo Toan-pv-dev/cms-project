@@ -116,6 +116,7 @@
             var html = '';
             for (let i = 0; i < allFiles.length; i++) {
                 var image = allFiles[i].url;
+                console.log(image);
                 html += '<li class="ui-state-default">'
                 html += '<div class="thumb">'
                 html += '<span class="span image img-scaledown">'
@@ -128,10 +129,11 @@
 
 
             }
-
+            console.log(html);
             $('.click-to-upload').addClass('hidden')
             $('#sortable').append(html)
             $('.upload-list').removeClass('hidden')
+            console.log(1);
         }
         finder.popup();
     }
@@ -139,7 +141,7 @@
         $(document).on('click', '.delete-image', function (e) {
             let _this = $(this)
             _this.parents('.ui-state-default').remove()
-            if ($('.ui-state-default').length == 0) {
+            if ($('.ui-state-default').length < 1) {
                 $('.click-to-upload').removeClass('hidden')
                 $('.upload-list').addClass('hidden')
 
