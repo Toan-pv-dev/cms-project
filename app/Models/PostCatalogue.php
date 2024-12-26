@@ -27,6 +27,10 @@ class PostCatalogue extends Model
         'image'
     ];
 
+    public function posts()
+    {
+        return $this->belongsTo(Post::class, 'post_catalogue_post', 'post_id', 'post_catalogue_id');
+    }
 
     public function languages()
     {

@@ -18,7 +18,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     ) {
         $this->model = $model;
     }
-    public function pagination($column = ['*'], $condition = [], $join = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [])
+    public function pagination($column = ['*'], $condition = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [], $join = [])
     {
         // dd($condition['publish']);
         $query = $this->model->select($column)->where(function ($query) use ($condition) {

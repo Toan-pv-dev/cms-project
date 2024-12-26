@@ -3,27 +3,27 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
-use App\Services\Interfaces\PostCatalogueServiceInterface as postCatalogueService;
-use App\Http\Requests\StorePostCatalogueRequest;
-use App\Http\Requests\UpdatePostCatalogueRequest;
-use App\Http\Requests\DeletePostCatalogueRequest;
+use App\Services\Interfaces\PostServiceInterface as PostService;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\DeletePostRequest;
 use Illuminate\Http\Request;
-use App\Repositories\PostCatalogueRepository as postCatalogueRepository;
+use App\Repositories\PostRepository as PostRepository;
 use App\Classes\Nestedsetbie;
 
 
-class PostCatalogueController extends Controller
+class PostController extends Controller
 {
-    protected $postCatalogueService;
-    protected $postCatalogueRepository;
+    protected $postService;
+    protected $postRepository;
     protected $nestedset;
     protected $language;
 
 
-    public function __construct(postCatalogueService $postCatalogueService, postCatalogueRepository $postCatalogueRepository)
+    public function __construct(PostService $postService, PostRepository $postRepository)
     {
-        $this->postCatalogueService = $postCatalogueService;
-        $this->postCatalogueRepository = $postCatalogueRepository;
+        $this->postService = $postService;
+        $this->postRepository = $postRepository;
         $this->nestedset = new Nestedsetbie(
             [
                 'table' => 'post_catalogues',
@@ -50,13 +50,15 @@ class PostCatalogueController extends Controller
 
             ]
         ];
-        $config['seo'] = config('apps.postcatalogue');
-        $postCatalogues = $this->postCatalogueService->paginate($request);
-        $template = 'backend.post.catalogue.index';
+        $config['seo'] = config('apps.post');
+
+        $posts = $this->postService->paginate($request);
+
+        $template = 'backend.post.post.index';
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
-            'postCatalogues',
+            'posts',
 
         ));
     }
@@ -65,75 +67,75 @@ class PostCatalogueController extends Controller
     {
         // dd($location);
         $config = $this->configData();
-        $config['seo'] = config('apps.postcatalogue');
+        $config['seo'] = config('apps.post');
         $config['method'] = 'create';
-        // $album = json_decode($postCatalogue->album);
+        // $album = json_decode($post->album);
         $dropdown = $this->getDropdown();
-        $template = 'backend.post.catalogue.store';
+        $template = 'backend.post.post.store';
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
             'dropdown'
         ));
     }
-    public function store(StorePostCatalogueRequest $storePostCatalogueRequest)
+    public function store(StorePostRequest $storePostRequest)
     {
 
-        if ($this->postCatalogueService->create($storePostCatalogueRequest)) {
+        if ($this->postService->create($storePostRequest)) {
             flash()->success('Thêm bản ghi thành công');
-            return redirect()->route('post.catalogue.index');
+            return redirect()->route('post.index');
         }
         flash()->error('Thêm bản ghi không thành công');
-        return redirect()->route('post.catalogue.index');
+        return redirect()->route('post.index');
     }
     public function edit($id)
     {
-        $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
-        // dd($postCatalogue);
+        $post = $this->postRepository->getPostById($id, $this->language);
+        // dd($post);
 
         $config = $this->configData();
-        $config['seo'] = config('apps.postcatalogue');
+        $config['seo'] = config('apps.post');
         $config['method'] = 'update';
         $dropdown = $this->getDropdown();
-        $album = json_decode($postCatalogue->album);
-        $template = 'backend.post.catalogue.store';
+        $album = json_decode($post->album);
+        $template = 'backend.post.post.store';
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
-            'postCatalogue',
+            'post',
             'dropdown',
             'album'
         ));
     }
-    public function update(UpdatePostCatalogueRequest $updaterequest, $id)
+    public function update(UpdatePostRequest $updaterequest, $id)
     {
-        if ($this->postCatalogueService->update($id, $updaterequest)) {
+        if ($this->postService->update($id, $updaterequest)) {
             flash()->success('Cap nhat ban ghi thanh cong');
-            return redirect()->route('post.catalogue.index');
+            return redirect()->route('post.index');
         }
-        return redirect()->route('post.catalouge.index')->with('error', 'Thêm mới bản ghi không thành công');
+        return redirect()->route('post.index')->with('error', 'Thêm mới bản ghi không thành công');
     }
     public function delete($id)
     {
-        $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
-        $config['seo'] = config('apps.postcatalogue');
+        $post = $this->postRepository->getPostById($id, $this->language);
+        $config['seo'] = config('apps.post');
         $config['method'] = 'delete';
-        // dd($postCatalogue);
-        $template = 'backend.post.catalogue.delete';
+        // dd($post);
+        $template = 'backend.post.post.delete';
         return view('backend.dashboard.layout', compact(
             'template',
-            'postCatalogue',
+            'post',
             'config'
         ));
     }
-    public function destroy($id, DeletePostCatalogueRequest $request)
+    public function destroy($id, DeletePostRequest $request)
     {
-        if ($this->postCatalogueRepository->delete($id)) {
+        if ($this->postRepository->delete($id)) {
             flash()->success('Xoa ban ghi thanh cong');
-            return redirect()->route('post.catalogue.index');
+            return redirect()->route('post.index');
         } else {
             flash()->error('Xoa ban ghi khong thanh cong');
-            return redirect()->route('post.catalogue.index');
+            return redirect()->route('post.index');
         }
     }
     private function configData()

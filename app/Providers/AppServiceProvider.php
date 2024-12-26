@@ -21,6 +21,11 @@ use App\Repositories\Interfaces\PostCatalogueRepositoryInterface;
 use App\Repositories\PostCatalogueRepository;
 use App\Services\PostCatalogueService;
 
+use App\Services\Interfaces\PostServiceInterface;
+use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Repositories\PostRepository;
+use App\Services\PostService;
+
 
 use App\Services\Interfaces\UserServiceInterface;
 use App\Repositories\UserRepository;
@@ -55,6 +60,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(PostCatalogueServiceInterface::class, PostCatalogueService::class);
         $this->app->bind(PostCatalogueRepositoryInterface::class, PostCatalogueRepository::class);
+
+        $this->app->bind(PostServiceInterface::class, PostService::class);
+        $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
     }
 
     public function boot(): void

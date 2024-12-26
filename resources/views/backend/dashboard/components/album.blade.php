@@ -11,11 +11,12 @@
         <div class="row">
             <div class="col-lg-12">
                 @php
-                    $isAlbumEmpty = !isset($album) || !is_array($album) || count($album) == 0;
+                    $album = $album ?? [];
+                    $isAlbumEmpty = empty($album);
                 @endphp
 
                 {{-- Phần hiển thị nút chọn hình khi album trống --}}
-                <div class="click-to-upload {{ !$isAlbumEmpty ? 'hidden' : '' }}">
+                <div class="click-to-upload {{ !old('album') && $isAlbumEmpty ? '' : 'hidden' }}">
                     <div class="icon">
                         <a href="" class="upload-picture">
                             <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24">
@@ -31,23 +32,21 @@
                 </div>
 
                 {{-- Phần hiển thị danh sách ảnh --}}
-                <div class="upload-list {{ $isAlbumEmpty ? 'hidden' : '' }}">
-                    <ul name="album" id="sortable" class="clearfix data-album sortui ui-sortable">
-                        @if (!$isAlbumEmpty)
-                            @foreach ($album as $key => $val)
-                                <li class="ui-state-default">
-                                    <div class="thumb">
-                                        <span class="span image img-scaledown">
-                                            <img src="{{ $val }}" alt="{{ $val }}">
-                                            <input type="hidden" name="album[]" value="{{ $val }}">
-                                        </span>
-                                        <button class="delete-image">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </li>
-                            @endforeach
-                        @endif
+                <div class="upload-list {{ $isAlbumEmpty && !old('album') ? 'hidden' : '' }}">
+                    <ul id="sortable" class="clearfix data-album sortui ui-sortable">
+                        @foreach (old('album', $album) as $key => $val)
+                            <li class="ui-state-default">
+                                <div class="thumb">
+                                    <span class="span image img-scaledown">
+                                        <img src="{{ $val }}" alt="{{ $val }}">
+                                        <input type="hidden" name="album[]" value="{{ $val }}">
+                                    </span>
+                                    <button class="delete-image">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

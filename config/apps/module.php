@@ -25,16 +25,17 @@ return [
             'name' => ['post'],
             'subModule' => [
                 [
-                    'title' => 'Quản lý bài viết',
-                    'route' => 'post.catalogue.index'
-
-
-                ],
-                [
                     'title' => 'Quản lý nhóm bài viết',
                     'route' => 'post.catalogue.index'
 
-                ]
+                ],
+                [
+                    'title' => 'Quản lý bài viết',
+                    'route' => 'post.index'
+
+
+                ],
+
 
             ]
         ],

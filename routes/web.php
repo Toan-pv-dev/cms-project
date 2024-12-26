@@ -10,6 +10,7 @@ use App\Http\Controllers\backend\UserCatalogueController;
 use App\Http\Controllers\Ajax\LocationController;
 use App\Http\Controllers\Backend\LanguageController;
 use App\Http\Controllers\backend\PostCatalogueController;
+use App\Http\Controllers\backend\PostController;
 
 // use App\Http\Middleware\LoginMiddleware;
 
@@ -57,7 +58,7 @@ Route::group(['prefix' => 'language'], function () {
     Route::post('destroy/{id}', [LanguageController::class, 'destroy'])->name('language.destroy')->middleware('admin');
 });
 
-//post
+//post_catalogue
 Route::group(['prefix' => 'post/catalogue'], function () {
 
     Route::post('store', [PostCatalogueController::class, 'store'])->name('post.catalogue.store')->middleware('admin');
@@ -67,6 +68,18 @@ Route::group(['prefix' => 'post/catalogue'], function () {
     Route::post('update/{id}', [PostCatalogueController::class, 'update'])->name('post.catalogue.update')->middleware('admin');
     Route::get('delete/{id}', [PostCatalogueController::class, 'delete'])->name('post.catalogue.delete')->middleware('admin');
     Route::post('destroy/{id}', [PostCatalogueController::class, 'destroy'])->name('post.catalogue.destroy')->middleware('admin');
+});
+
+// posts
+Route::group(['prefix' => 'post/'], function () {
+
+    Route::post('store', [PostController::class, 'store'])->name('post.store')->middleware('admin');
+    Route::get('index', [PostController::class, 'index'])->name('post.index')->middleware('admin');
+    Route::get('create', [PostController::class, 'create'])->name('post.create')->middleware('admin');
+    Route::get('edit/{id}', [PostController::class, 'edit'])->name('post.edit')->middleware('admin');
+    Route::post('update/{id}', [PostController::class, 'update'])->name('post.update')->middleware('admin');
+    Route::get('delete/{id}', [PostController::class, 'delete'])->name('post.delete')->middleware('admin');
+    Route::post('destroy/{id}', [PostController::class, 'destroy'])->name('post.destroy')->middleware('admin');
 });
 
 
