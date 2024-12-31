@@ -55,7 +55,7 @@ class UserService  implements UserServiceInterface
         } catch (\Exception $e) {
             DB::rollBack();
             echo $e->getMessage();
-            die();
+
             return false;
         }
     }
@@ -99,7 +99,7 @@ class UserService  implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
-            dd($post);
+            // dd($post);
             $payload[$post['field']] =  (($post['value'] == 1) ? 0 : 1);
             // dd($payload);
             // dd($payload[$post['field']]);
@@ -120,9 +120,8 @@ class UserService  implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
-            dd($post);
+            // dd($post);
             $payload[$post['field']] = $post['value'];
-            dd($payload);
 
             $user =  $this->userRepository->updateByWhereIn('id',  $post['id'], $payload);
             DB::commit();

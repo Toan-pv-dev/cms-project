@@ -33,7 +33,7 @@ class UserCatalogueService  implements UserCatalogueServiceInterface
         $condition['publish'] = $request->input('publish');
         $perpage = $request->integer('perpage');
 
-        $userCatalogues = $this->userCatalogueRepository->pagination($select, $condition, '', $perpage, ['path' => 'user/catalogue/index'], ['users']);
+        $userCatalogues = $this->userCatalogueRepository->pagination($select, $condition, $perpage, ['path' => 'user/catalogue/index'], ['users'], []);
         // echo 1;
         // die();
         // dd($userCatalogues);

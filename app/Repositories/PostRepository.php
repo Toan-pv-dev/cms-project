@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\PostCatalogue;
+use App\Models\Post;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use App\Repositories\BaseRepository;
 
@@ -14,7 +14,7 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
 {
     protected $model;
     public function __construct(
-        PostCatalogue $model
+        Post $model
     ) {
         // dd($model);
         $this->model = $model;

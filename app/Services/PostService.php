@@ -54,26 +54,34 @@ class PostService  extends BaseService implements PostServiceInterface
     {
         DB::beginTransaction();
         try {
-            // $post = $this->postRepository->findById($id);
             // dd($request->all());
             $payload = $request->only($this->payload());
             // dd($payload);
             $payload['user_id'] = Auth::id();
             $payload['album'] = json_encode($payload['album']);
-            // dd($payload['album']);
             // dd($payload);
             $post = $this->postRepository->create($payload);
+
             if ($post->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
-                // dd($payloadLanguage);
+                // dd($payload);
                 $payloadLanguage['language_id'] = $this->currentLanguage();
-                $payloadLanguage['post_catalogue_id'] = $post->id;
+                $payloadLanguage['post_id'] = $post->id;
                 $payloadLanguage['canonical'] =  Str::slug($payloadLanguage['canonical']);
-                $language = $this->postRepository->createTranslatePivot($post, $payloadLanguage);
-                $PostCataloguepost = $this->handlePostCataloguePost($post->id,  $request->input('catalogue'));
+                // dd($payloadLanguage);
+                // dd($payloadLanguage);
+                $language = $this->postRepository->createPivot($post, $payloadLanguage, 'languages');
+                // dd($language);
+
+                $catalogue = $this->catalogue($request);
+                // dd($catalogue);
+                // dd($post);
+                dd($catalogue);
+                $post->post_catalogues()->sync($catalogue);
+                // echo 1;
+                // die();
             }
             DB::commit();
-
             return $post;
         } catch (\Exception $e) {
             DB::rollBack();
@@ -93,7 +101,7 @@ class PostService  extends BaseService implements PostServiceInterface
 
             $payload['user_id'] = Auth::id();
             $payload['album'] = json_encode($payload['album']);
-            dd($payload['album']);
+            // dd($payload['album']);
 
             // dd($payload);
             $flag = $this->postRepository->update($id, $payload);
@@ -187,26 +195,25 @@ class PostService  extends BaseService implements PostServiceInterface
             return false; // Trả về false nếu có lỗi
         }
     }
-    private function handlePostCataloguePost(int $post_id = 0, array $catalogue = [])
+    private function catalogue($request)
     {
-        $relation = [];
-        if (count($catalogue)) {
-            foreach ($catalogue as $key => $val) {
-                $relation[] = [
-                    'post_id' => $post_id,
-                    'post_catalogue_id' => $val,
-                ];
-            }
-        }
+        // Lấy dữ liệu từ request, đảm bảo nó là một mảng
+        $postCatalogueIds = $request->input('post_catalogue_id', []);
 
-        dd($relation);
+        // Ép kiểu thành mảng (nếu là null hoặc chuỗi)
+        $postCatalogueIds = is_array($postCatalogueIds) ? $postCatalogueIds : [$postCatalogueIds];
+
+        // Loại bỏ giá trị trống và trùng lặp
+        return array_filter(array_unique($postCatalogueIds));
     }
+
+
     private function payload()
     {
-        return ['parent_id', 'follow', 'publish', 'image', 'album'];
+        return ['follow', 'publish', 'image', 'album', 'parent_id'];
     }
     private function payloadLanguage()
     {
-        return ['name', 'description', 'content', 'meta_title', 'meta_keyword', 'meta_description', 'canonical'];
+        return ['name', 'post_id', 'description', 'content', 'meta_title', 'meta_keyword', 'meta_description', 'canonical'];
     }
 }

@@ -75,8 +75,33 @@ class BaseRepository implements BaseRepositoryInterface
     {
         $this->model->whereIn($whereInField, $whereIn)->update($payload);
     }
-    public function createTranslatePivot($model, array $payload = [])
+    public function createPivot($model, array $payload = [], string $relation = '')
     {
-        return $model->languages()->attach($model->id, $payload);
+        if (method_exists($model, $relation)) {
+            $languageId = $payload['language_id'] ?? null;
+
+            if ($languageId && is_numeric($languageId)) {
+                $pivotData = [
+                    $languageId => [
+                        'name' => $payload['name'] ?? null,
+                        'description' => $payload['description'] ?? null,
+                        'content' => $payload['content'] ?? null,
+                        'meta_title' => $payload['meta_title'] ?? null,
+                        'meta_keyword' => $payload['meta_keyword'] ?? null,
+                        'meta_description' => $payload['meta_description'] ?? null,
+                        'canonical' => $payload['canonical'] ?? null,
+                        // 'parent_id' => $payload['parent_id'] ?? null,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                ];
+
+                return $model->{$relation}()->attach($pivotData);
+            } else {
+                throw new \Exception("Invalid or missing 'language_id' in payload.");
+            }
+        }
+
+        throw new \Exception("Relation '{$relation}' does not exist on " . get_class($model));
     }
 }

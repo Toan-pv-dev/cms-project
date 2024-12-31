@@ -24,12 +24,12 @@ class PostCatalogue extends Model
         'album',
         'publish',
         'order',
-        'image'
+        'image',
     ];
 
     public function posts()
     {
-        return $this->belongsTo(Post::class, 'post_catalogue_post', 'post_id', 'post_catalogue_id');
+        return $this->belongsTo(Post::class, 'post_catalogue_post', 'post_catalogue_id', 'post_id');
     }
 
     public function languages()

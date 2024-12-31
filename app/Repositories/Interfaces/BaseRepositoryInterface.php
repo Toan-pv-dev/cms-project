@@ -15,5 +15,5 @@ interface BaseRepositoryInterface
     public function delete(int $id = 0);
     public function pagination($column = ['*'], $condition = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [], $join = []);
     public function updateByWhereIn($whereInField = '', $whereIn = [], $payload = []);
-    public function createTranslatePivot($model, array $payload = []);
+    public function createPivot($model, array $payload = [], string $relation = '');
 }

@@ -28,11 +28,11 @@
                     <p><span class="text-danger notice">Thư mục phụ (*)</span>
                     </p>
 
-                    <select name="catalogue[]" class="setupSelect2" class="form-control" placeholder=""
+                    <select name="post_catalogue_id[]" class="setupSelect2" class="form-control" placeholder=""
                         autocomplete="off" multiple="multiple">
                         @foreach ($dropdown as $key => $item)
-                            <option @if (is_array(old('catalogue', isset($post->catalogue) ? $post->catalogue : [])) &&
-                                    in_array($key, old('catalogue', isset($post->catalogue) ? $post->catalogue : []))) selected @endif value="{{ $key }}">
+                            <option @if (is_array(old('post_catalogue_id', isset($post->post_catalogue_id) ? $post->post_catalogue_id : [])) &&
+                                    in_array($key, old('post_catalogue_id', isset($post->post_catalogue_id) ? $post->post_catalogue_id : []))) selected @endif value="{{ $key }}">
                                 {{ $item }}
 
                             </option>
