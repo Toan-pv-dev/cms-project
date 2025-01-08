@@ -13,8 +13,9 @@
                         placeholder="" autocomplete="off">
                         @foreach ($dropdown as $key => $item)
                             <option
-                                {{ $key == old('post_catalogue_id', isset($post->post_catalogue_id) ? $post->post_catalogue_id : '') ? 'selected' : '' }}
-                                value="{{ $key }}">{{ $item }}</option>
+                                {{ $key == old('post_catalogue_id', $post->post_catalogue_id ?? '') ? 'selected' : '' }}
+                                value="{{ $key }}">{{ $item }}
+                            </option>
                         @endforeach
 
                         {{-- <option value="2">..</option> --}}
@@ -30,11 +31,13 @@
                     <select name="post_catalogue[]" class="setupSelect2" class="form-control" placeholder=""
                         autocomplete="off" multiple="multiple">
                         @foreach ($dropdown as $key => $item)
-                            <option @if (is_array(old('post_catalogue', isset($post_catalogue) && count($post_catalogue) ? $post_catalogue : [])) &&
-                                    in_array($key, old('post_catalogue', isset($post_catalogue) ? $post_catalogue : []))) selected @endif value="{{ $key }}">
-                                {{ $item }}
-
-                            </option>
+                            @if ($key != old('post_catalogue_id', $post->post_catalogue_id ?? ''))
+                                <!-- Kiểm tra và loại bỏ post_catalogue_id khỏi danh sách -->
+                                <option @if (is_array(old('post_catalogue', isset($post_catalogue) && count($post_catalogue) ? $post_catalogue : [])) &&
+                                        in_array($key, old('post_catalogue', isset($post_catalogue) ? $post_catalogue : []))) selected @endif value="{{ $key }}">
+                                    {{ $item }}
+                                </option>
+                            @endif
                             {{-- <option value="{{ $key }}" @if (in_array($key, old('catalogues', isset($post->catalogues) ? (is_array($post->catalogues) ? $post->catalogues : explode(',', $post->catalogues)) : []))) selected @endif>
                                 {{ $item }}
                             </option> --}}

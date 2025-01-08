@@ -79,7 +79,7 @@ class PostService  extends BaseService implements PostServiceInterface
             $post = $this->postRepository->findById($id);
 
             // $flag = $this->postRepository->update($id, $payload);
-            if ($this->updatePost($post, $request)) {
+            if ($this->updatePost($post->id, $request)) {
 
 
                 $this->updateLanguageForPost($post, $request);
@@ -116,8 +116,10 @@ class PostService  extends BaseService implements PostServiceInterface
             // dd($post);
             $payload[$post['field']] = (($post['value'] == '1') ? '0' : '1');
             $this->postRepository->update($post['modelId'], $payload);
-            // dd($post);
+            echo 123;
+
             $this->changeUserStatus($post, $payload[$post['field']]);
+            die();
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -127,7 +129,7 @@ class PostService  extends BaseService implements PostServiceInterface
             return false;
         }
     }
-    public function updateStatusAll($post)
+    public function updateStatusAll($post = [])
     {
         DB::beginTransaction();
         try {
@@ -154,7 +156,7 @@ class PostService  extends BaseService implements PostServiceInterface
                 $array = $post['id'];
             }
             $payload[$post['field']] = $value;
-            $this->postRepository->updateByWhereIn('post_catalogues.id', $array, $payload);
+            $this->postRepository->updateByWhereIn('posts.id', $array, $payload);
             DB::commit();
             return true; // Phải trả về true nếu cập nhật thành công
         } catch (\Exception $e) {
@@ -181,6 +183,7 @@ class PostService  extends BaseService implements PostServiceInterface
         $payload = $request->only($this->payload());
         $payload['album'] = $this->formatAlbum($payload['album'] ?? null);
         // dd($payload['album']);
+        // dd($id);
         return $this->postRepository->update($id, $payload);
     }
     private function formatAlbum($album = null)
