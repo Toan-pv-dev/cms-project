@@ -47,6 +47,7 @@ class DashboardController extends Controller
     public function changeStatusAll(Request $request)
     {
         $post = $request->input();
+        // dd($post['model']);
         $serviceName = $post['model'] === 'user_catalogues' ? 'UserCatalogueService' : ucfirst($post['model']) . 'Service';
         $serviceInterfaceNamespace = '\App\Services\\' . $serviceName;
         if (class_exists($serviceInterfaceNamespace)) {

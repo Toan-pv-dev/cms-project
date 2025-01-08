@@ -38,7 +38,8 @@ class UserController extends Controller
             'css' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css',
-            ]
+            ],
+            'model' => 'User'
         ];
         $config['seo'] = config('apps.user');
         $users = $this->userService->paginate($request);

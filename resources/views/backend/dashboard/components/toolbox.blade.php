@@ -8,11 +8,11 @@
             <i class="fa fa-wrench"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li><a href="#" class="changeStatusAllOn" data-field="publish" data-model="{{ $model }}"
+            <li><a href="#" class="changeStatusAllOn" data-field="publish" data-model="{{ $config['model'] }}"
                     data-value="1">Pulish
                     toàn bộ thành viên</a>
             </li>
-            <li><a href="#" class="changeStatusAllOff" data-field="publish" data-model="{{ $model }}"
+            <li><a href="#" class="changeStatusAllOff" data-field="publish" data-model="{{ $config['model'] }}"
                     data-value="0">Unpublish toàn bộ thành viên</a>
 
             </li>

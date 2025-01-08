@@ -33,9 +33,9 @@
 
 
                         {{-- {{ $user->id }} --}}
-                        <input type="checkbox" data-field="publish" data-model="postCatalogue" class="js-switch status"
-                            {{ $postCatalogue->publish == 1 ? 'checked' : '' }} value="{{ $postCatalogue->publish }}"
-                            data-modelId="{{ $postCatalogue->id ?? '' }}" />
+                        <input type="checkbox" data-field="publish" data-model="{{ $config['model'] }}"
+                            class="js-switch status" {{ $postCatalogue->publish == 1 ? 'checked' : '' }}
+                            value="{{ $postCatalogue->publish }}" data-modelId="{{ $postCatalogue->id ?? '' }}" />
 
                     </td>
                     <td class="edit-btn-group" style="text-align:center; position: relative">

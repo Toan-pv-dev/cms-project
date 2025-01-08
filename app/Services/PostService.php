@@ -25,7 +25,7 @@ class PostService  extends BaseService implements PostServiceInterface
     }
     public function select()
     {
-        return ['posts.id', 'posts.publish', 'posts.image', 'posts.level', 'posts.order', 'tb2.name', 'tb2.canonical'];
+        return ['posts.id', 'posts.publish', 'posts.image', 'posts.order', 'tb2.name'];
     }
     public function paginate($request)
     {
@@ -44,7 +44,8 @@ class PostService  extends BaseService implements PostServiceInterface
             [
                 'posts.id' => 'DESC',
             ],
-            ['post_catalogue_post as tb2', 'tb2.post_id', '=', 'post_id'],
+            ['post_language as tb2', 'tb2.post_id', '=', 'id'],
+            ['post_catalogues']
 
         );
         return $posts;
@@ -54,32 +55,11 @@ class PostService  extends BaseService implements PostServiceInterface
     {
         DB::beginTransaction();
         try {
-            // dd($request->all());
-            $payload = $request->only($this->payload());
-            // dd($payload);
-            $payload['user_id'] = Auth::id();
-            $payload['album'] = json_encode($payload['album']);
-            // dd($payload);
-            $post = $this->postRepository->create($payload);
+            $post = $this->createPost($request);
 
             if ($post->id > 0) {
-                $payloadLanguage = $request->only($this->payloadLanguage());
-                // dd($payload);
-                $payloadLanguage['language_id'] = $this->currentLanguage();
-                $payloadLanguage['post_id'] = $post->id;
-                $payloadLanguage['canonical'] =  Str::slug($payloadLanguage['canonical']);
-                // dd($payloadLanguage);
-                // dd($payloadLanguage);
-                $language = $this->postRepository->createPivot($post, $payloadLanguage, 'languages');
-                // dd($language);
-
-                $catalogue = $this->catalogue($request);
-                // dd($catalogue);
-                // dd($post);
-                dd($catalogue);
-                $post->post_catalogues()->sync($catalogue);
-                // echo 1;
-                // die();
+                $this->updateLanguageForPost($post, $request);
+                $this->updateCatalogueForPost($post, $request);
             }
             DB::commit();
             return $post;
@@ -95,27 +75,16 @@ class PostService  extends BaseService implements PostServiceInterface
     {
         DB::beginTransaction();
         try {
+
             $post = $this->postRepository->findById($id);
-            // dd($post);
-            $payload = $request->only($this->payload());
 
-            $payload['user_id'] = Auth::id();
-            $payload['album'] = json_encode($payload['album']);
-            // dd($payload['album']);
+            // $flag = $this->postRepository->update($id, $payload);
+            if ($this->updatePost($post, $request)) {
 
-            // dd($payload);
-            $flag = $this->postRepository->update($id, $payload);
-            if ($flag) {
 
-                $payloadLanguage = $request->only($this->payloadLanguage());
-                $payloadLanguage['language_id'] = $this->currentLanguage();
-                $payloadLanguage['post_catalogue_id'] = $id;
-                $post->languages()->detach([$payloadLanguage['language_id'], $id]);
-                $response = $this->postRepository->createTranslatePivot($post, $payloadLanguage);
+                $this->updateLanguageForPost($post, $request);
+                $this->updateCatalogueForPost($post, $request);
             }
-            $this->nestedSet->Get();
-            $this->nestedSet->Recursive(0, $this->nestedSet->Set());
-            $this->nestedSet->Action();
             DB::commit();
 
             return true;
@@ -195,10 +164,55 @@ class PostService  extends BaseService implements PostServiceInterface
             return false; // Trả về false nếu có lỗi
         }
     }
+    private function createPost($request)
+    {
+
+        $payload = $request->only($this->payload());
+        $payload['user_id'] = Auth::id();
+        $payload['album'] = $this->formatAlbum($payload['album'] ?? null);
+        // dd($payload);
+        $post = $this->postRepository->create($payload);
+        // dd($post);
+        return $post;
+    }
+
+    private function updatePost($id, $request)
+    {
+        $payload = $request->only($this->payload());
+        $payload['album'] = $this->formatAlbum($payload['album'] ?? null);
+        // dd($payload['album']);
+        return $this->postRepository->update($id, $payload);
+    }
+    private function formatAlbum($album = null)
+    {
+        // dd($payload);
+        return !empty($album) ? json_encode($album) : '';
+    }
+
+    private function updateLanguageForPost($post, $request)
+    {
+        $payload = $request->only($this->payloadLanguage());
+        $payload = $this->formatLanguagePayload($payload, $post->id);
+        $post->languages()->detach([$this->currentLanguage(), $post->id]);
+        return  $this->postRepository->createPivot($post, $payload, 'languages');
+    }
+
+    private function formatLanguagePayload($payload, $postId)
+    {
+        $payload['canonical'] =  Str::slug($payload['canonical']);
+        $payload['language_id'] = $this->currentLanguage();
+        $payload['post_id'] = $postId;
+        return $payload;
+    }
+    private function updateCatalogueForPost($post, $request)
+    {
+        $post->post_catalogues()->sync($this->catalogue($request));
+    }
+
     private function catalogue($request)
     {
         // Lấy dữ liệu từ request, đảm bảo nó là một mảng
-        $postCatalogueIds = $request->input('post_catalogue_id', []);
+        $postCatalogueIds = $request->input('post_catalogue', []);
 
         // Ép kiểu thành mảng (nếu là null hoặc chuỗi)
         $postCatalogueIds = is_array($postCatalogueIds) ? $postCatalogueIds : [$postCatalogueIds];
@@ -210,7 +224,7 @@ class PostService  extends BaseService implements PostServiceInterface
 
     private function payload()
     {
-        return ['follow', 'publish', 'image', 'album', 'parent_id'];
+        return ['follow', 'publish', 'image', 'album', 'post_catalogue_id'];
     }
     private function payloadLanguage()
     {

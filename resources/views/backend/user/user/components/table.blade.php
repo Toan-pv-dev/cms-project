@@ -51,9 +51,9 @@
 
 
                         {{-- {{ $user->id }} --}}
-                        <input type="checkbox" data-field="publish" data-model="User" class="js-switch status"
-                            {{ $user->publish == 1 ? 'checked' : '' }} value="{{ $user->publish }}"
-                            data-modelId="{{ $user->id ?? '' }}" />
+                        <input type="checkbox" data-field="publish" data-model="{{ $config['model'] }}"
+                            class="js-switch status" {{ $user->publish == 1 ? 'checked' : '' }}
+                            value="{{ $user->publish }}" data-modelId="{{ $user->id ?? '' }}" />
 
                     </td>
                     <td class="edit-btn-group" style="text-align:center; position: relative">

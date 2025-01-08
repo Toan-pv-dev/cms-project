@@ -321,3 +321,45 @@ input[name=canonical] {
 /* .hidden {
     display: none;
 } */
+
+.image-post {
+    max-width: 75px;
+    /* height: auto; */
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.main_title span {
+    color: #337ab7;
+}
+
+.main_title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    font-size: 18px;
+
+}
+
+.catalogues {
+    font-size: 15px;
+}
+
+.catalogues span {
+    font-weight: 600;
+}
+
+.catalogues a {
+    color: #333;
+    margin-left: 3px;
+}

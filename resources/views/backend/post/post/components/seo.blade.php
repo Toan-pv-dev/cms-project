@@ -75,8 +75,8 @@
                             </label>
                             <div class="input-container">
                                 <input type="text" name="canonical"
-                                    value="{{ old('meta_description', $post->meta_description ?? '') }}"
-                                    class="form-control " placeholder="" autocomplete="off">
+                                    value="{{ old('meta_description', $post->canonical ?? '') }}" class="form-control "
+                                    placeholder="" autocomplete="off">
                                 <span class="baseUrl">{{ config('app.url') }}</span>
                             </div>
                         </div>

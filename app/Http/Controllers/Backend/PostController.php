@@ -48,7 +48,8 @@ class PostController extends Controller
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css',
 
-            ]
+            ],
+            'model' => 'post'
         ];
         $config['seo'] = config('apps.post');
 
@@ -69,7 +70,6 @@ class PostController extends Controller
         $config = $this->configData();
         $config['seo'] = config('apps.post');
         $config['method'] = 'create';
-        // $album = json_decode($post->album);
         $dropdown = $this->getDropdown();
         $template = 'backend.post.post.store';
         return view('backend.dashboard.layout', compact(
@@ -90,24 +90,29 @@ class PostController extends Controller
     }
     public function edit($id)
     {
+
         $post = $this->postRepository->getPostById($id, $this->language);
-        // dd($post);
+        $album = json_decode($post->album);
+
+        $post_catalogue = $this->catalogue($post);
 
         $config = $this->configData();
+        // dd($post_catalogue);
         $config['seo'] = config('apps.post');
         $config['method'] = 'update';
         $dropdown = $this->getDropdown();
-        $album = json_decode($post->album);
+        // $album = json_decode($post->album);
         $template = 'backend.post.post.store';
         return view('backend.dashboard.layout', compact(
             'template',
             'config',
             'post',
             'dropdown',
-            'album'
+            'album',
+            'post_catalogue'
         ));
     }
-    public function update(UpdatePostRequest $updaterequest, $id)
+    public function update($id, UpdatePostRequest $updaterequest,)
     {
         if ($this->postService->update($id, $updaterequest)) {
             flash()->success('Cap nhat ban ghi thanh cong');
@@ -155,5 +160,10 @@ class PostController extends Controller
 
             ]
         ];
+    }
+    private function catalogue($post)
+    {
+        $ids = $post->post_catalogues->pluck('id')->toArray();
+        return $ids;
     }
 }

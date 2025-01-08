@@ -19,7 +19,7 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
         // dd($model);
         $this->model = $model;
     }
-    public function pagination($column = ['*'], $condition = [], $join = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [])
+    public function pagination($column = ['*'], $condition = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [], $join = [])
     {
         // dd($condition['publish']);
         // dd($this->$model);

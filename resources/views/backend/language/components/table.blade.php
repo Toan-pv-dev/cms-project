@@ -36,9 +36,9 @@
 
 
                         {{-- {{ $user->id }} --}}
-                        <input type="checkbox" data-field="publish" data-model="language" class="js-switch status"
-                            {{ $language->publish == 1 ? 'checked' : '' }} value="{{ $language->publish }}"
-                            data-modelId="{{ $language->id ?? '' }}" />
+                        <input type="checkbox" data-field="publish" data-model="{{ $config['model'] }}"
+                            class="js-switch status" {{ $language->publish == 1 ? 'checked' : '' }}
+                            value="{{ $language->publish }}" data-modelId="{{ $language->id ?? '' }}" />
 
                     </td>
                     <td class="edit-btn-group" style="text-align:center; position: relative">

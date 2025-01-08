@@ -4,38 +4,54 @@
             <th>
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
-            <th>Ảnh</th>
-            <th>Tên nhóm</th>
-            {{-- <th>Canonical</th> --}}
-            <th>Tình trạng</th>
-            <th>Action</th>
+            <th>Tiêu đề</th>
+            <th style="width: 80px" class="text-center">Vị trí</th>
+            <th class="text-center">Tình trạng</th>
+
+            <th class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
         @if (isset($posts) && is_object($posts))
             @foreach ($posts as $post)
-                <tr>
+                <tr id="{{ $post->id }}">
                     <td>
                         <input type="checkbox" value="{{ $post->id }}" class="input-checkbox checkBoxItem">
                     </td>
-                    <td style="width: 100px; height: 60px; text-align: center;">
-                        <span><img style=" width: 100%;height: 100%;object-fit: cover; border-radius: 5px; "
-                                src="{{ $post->image }}" alt=""></span>
-                    </td>
 
                     <td>
-                        {{ $post->name }}
+                        <div class="uk-flex uk-flex-middle">
+                            <div class="image mr5 image-post">
+                                <img src="{{ $post->image }}" alt="{{ $post->name }}" class="img-cover">
+                            </div>
+                            <div class="main-info">
+                                <div class="main_title">
+                                    <span>{{ $post->name }}</span>
+                                </div>
+                                <div class="catalogues">
+                                    <span class="text-danger">Nhóm hiển thị</span>
+                                    @foreach ($post->post_catalogues as $val)
+                                        @foreach ($val->post_catalogue_language as $cat)
+                                            <a href="">{{ $cat->name }}</a>
+                                        @endforeach
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                        </div>
                     </td>
-                    {{-- <td>
-                        {{ $post->image }}
-                    </td> --}}
+                    <td>
+                        <input type="number" name="order" class="form-control sort-order text-center"
+                            data-id="{{ $post->id }}" data-model="{{ $config['model'] }}"
+                            value="{{ $post->order }}">
+                    </td>
+
                     <td class="text-center js-switch-{{ $post->id }}">
-
-
-                        {{-- {{ $user->id }} --}}
-                        <input type="checkbox" data-field="publish" data-model="post" class="js-switch status"
-                            {{ $post->publish == 1 ? 'checked' : '' }} value="{{ $post->publish }}"
-                            data-modelId="{{ $post->id ?? '' }}" />
+                        <input type="checkbox" data-field="publish" data-model="{{ $config['model'] }}"
+                            class="js-switch status" {{ $post->publish == 1 ? 'checked' : '' }}
+                            value="{{ $post->publish }}" data-modelId="{{ $post->id ?? '' }}" />
 
                     </td>
                     <td class="edit-btn-group" style="text-align:center; position: relative">

@@ -9,12 +9,11 @@
                 <div class="form-row">
                     <p><span class="text-danger notice">Chọn Root nêú không tồn tại thư mục cha (*)</span>
                     </p>
-
-                    <select type="text" name="parent_id" value="{{ old('parent_id', $post->name ?? '') }}"
-                        class="setupSelect2" class="form-control" placeholder="" autocomplete="off">
+                    <select name="post_catalogue_id" type="text" class="setupSelect2" class="form-control"
+                        placeholder="" autocomplete="off">
                         @foreach ($dropdown as $key => $item)
                             <option
-                                {{ $key == old('parent_id', isset($post->parent_id) ? $post->parent_id : '') ? 'selected' : '' }}
+                                {{ $key == old('post_catalogue_id', isset($post->post_catalogue_id) ? $post->post_catalogue_id : '') ? 'selected' : '' }}
                                 value="{{ $key }}">{{ $item }}</option>
                         @endforeach
 
@@ -28,11 +27,11 @@
                     <p><span class="text-danger notice">Thư mục phụ (*)</span>
                     </p>
 
-                    <select name="post_catalogue_id[]" class="setupSelect2" class="form-control" placeholder=""
+                    <select name="post_catalogue[]" class="setupSelect2" class="form-control" placeholder=""
                         autocomplete="off" multiple="multiple">
                         @foreach ($dropdown as $key => $item)
-                            <option @if (is_array(old('post_catalogue_id', isset($post->post_catalogue_id) ? $post->post_catalogue_id : [])) &&
-                                    in_array($key, old('post_catalogue_id', isset($post->post_catalogue_id) ? $post->post_catalogue_id : []))) selected @endif value="{{ $key }}">
+                            <option @if (is_array(old('post_catalogue', isset($post_catalogue) && count($post_catalogue) ? $post_catalogue : [])) &&
+                                    in_array($key, old('post_catalogue', isset($post_catalogue) ? $post_catalogue : []))) selected @endif value="{{ $key }}">
                                 {{ $item }}
 
                             </option>
@@ -67,6 +66,7 @@
                         <input type="hidden" name="image" value="{{ old('image', $post->image ?? '') }}">
                     </span>
                 </div>
+
             </div>
         </div>
 
