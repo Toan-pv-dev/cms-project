@@ -50,11 +50,14 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
             $condition,
             $perpage,
             ['path' => 'post.catalogue/index'],
-            [],
             [
                 'post_catalogues.lft' => 'asc',
             ],
             ['post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id'],
+            [],
+            []
+
+
 
         );
         return $postCatalogues;

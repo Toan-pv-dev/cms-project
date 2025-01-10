@@ -52,7 +52,7 @@ class PostController extends Controller
             'model' => 'post'
         ];
         $config['seo'] = config('apps.post');
-
+        $dropdown = $this->getDropdown();
         $posts = $this->postService->paginate($request);
 
         $template = 'backend.post.post.index';
@@ -60,6 +60,7 @@ class PostController extends Controller
             'template',
             'config',
             'posts',
+            'dropdown'
 
         ));
     }

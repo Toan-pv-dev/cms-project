@@ -26,7 +26,7 @@
                         @foreach ($publishArray as $key => $val)
                             {
                             <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">
-                                {{ $val }}
+                            {{ $val }}
                             </option>
 
                             }

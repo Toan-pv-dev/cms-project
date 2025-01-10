@@ -34,6 +34,10 @@
     margin-bottom: 15px;
 }
 
+.p0 {
+    padding: 0;
+}
+
 h5 {
     text-transform: uppercase;
     font-weight: normal;

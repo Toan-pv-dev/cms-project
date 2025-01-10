@@ -20,20 +20,6 @@
                 $publish = request()->has('publish') ? request('publish') : old('publish', -1);
             @endphp
             <div class="right-component-filter col-lg-8 col-md-6 mb-2 mr-10 " style="padding:0">
-                {{-- <div class="perpage-select col-lg-3">
-                    <select name="publish" class="form-control publish ">
-                        <option value="-1" selected>Chon thanh vien</option>
-                        @foreach ($publishArray as $key => $val)
-                            {
-                            <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">
-                                {{ $val }}
-                            </option>
-
-                            }
-                        @endforeach
-
-                    </select>
-                </div> --}}
                 <div class="perpage-select col-lg-3">
                     <select name="role" class="form-control setup-select2 publish">
                         <option value="0">Chọn nhóm thành viên</option>

@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Traits\QueryScope;
 
 class Post extends Model
 {
     protected $table = 'posts';
 
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, QueryScope;
     protected $fillable = [
         'image',
         'icon',

@@ -29,27 +29,35 @@ class PostService  extends BaseService implements PostServiceInterface
     }
     public function paginate($request)
     {
-
-
         $select = $this->select();
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
-        $perpage = $request->integer('perpage');
-        $posts = $this->postRepository->pagination(
-            $select,
-            $condition,
-            $perpage,
-            ['path' => 'post/index'],
-            [],
-            [
-                'posts.id' => 'DESC',
-            ],
-            ['post_language as tb2', 'tb2.post_id', '=', 'id'],
-            ['post_catalogues']
+        $condition['where'] = [
+            ['tb2.language_id', '=', $this->currentLanguage()],
+        ];
 
+        $perPage = $request->integer('perpage');
+        $joins = [
+            ['post_language as tb2', 'tb2.post_id', '=', 'id'],
+            ['post_catalogue_post as tb3', 'posts.id', '=', 'tb3.post_id']
+        ];
+
+
+
+
+
+        return $this->postRepository->pagination(
+            $select,         // Columns to select
+            $condition,      // Conditions
+            $perPage,        // Items per page
+            ['path' => 'post/index', 'groupBy' => $this->select()], // Extended options
+            ['posts.id' => 'DESC'], // Order by
+            $joins,
+            ['post_catalogues'],
+            $this->whereRaw($request),
         );
-        return $posts;
     }
+
 
     public function create($request)
     {
@@ -116,10 +124,7 @@ class PostService  extends BaseService implements PostServiceInterface
             // dd($post);
             $payload[$post['field']] = (($post['value'] == '1') ? '0' : '1');
             $this->postRepository->update($post['modelId'], $payload);
-            echo 123;
-
             $this->changeUserStatus($post, $payload[$post['field']]);
-            die();
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -224,6 +229,26 @@ class PostService  extends BaseService implements PostServiceInterface
         return array_filter(array_unique($postCatalogueIds));
     }
 
+    private function whereRaw($request)
+    {
+        $rawCondition = [];
+        // dd($request->integer('post_catalogue_id'));
+        if ($request->integer('post_catalogue_id') > 0) {
+            $rawCondition['whereRaw'] =
+                [
+                    [
+                        'tb3.post_catalogue_id IN (SELECT id FROM post_catalogues
+                    WHERE lft >= (SELECT lft FROM post_catalogues AS pc WHERE pc.id = ?)
+                    AND rgt <= (SELECT rgt FROM post_catalogues AS pc WHERE pc.id = ?)
+                )',
+                        [$request->integer('post_catalogue_id'), $request->integer('post_catalogue_id')]
+                    ]
+                ];
+        }
+        // dd($rawCondition);
+        return $rawCondition;
+        // dd($rawCondition);
+    }
 
     private function payload()
     {

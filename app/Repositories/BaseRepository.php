@@ -18,13 +18,17 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
-    public function pagination($column = ['*'], $condition = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [], $join = [])
-    {
-        $query = $this->model->select($column)->where(function ($query) use ($condition) {
-            if (isset($condition['keyword']) && !empty($condition['keyword'])) {
-                $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%');
-            }
-        });
+    public function pagination(
+        $column = ['*'],
+        array $condition = [],
+        int $perPage = 1,
+        array $extend = [],
+        array $orderBy = [],
+        array $join = [],
+        array $relations = [],
+        array $rawQuery = [],
+    ) {
+        $query = $this->model->select($column)->where(function ($query) use ($condition) {});
 
 
         if (isset($join) && is_array($join) && count($join)) {
@@ -32,8 +36,14 @@ class BaseRepository implements BaseRepositoryInterface
                 $query->join($val[0], $val[1], $val[2], $val[3]);
             }
         }
-
+        if (isset($condition['where']) &&  count($condition['where'])) {
+            foreach ($condition['where'] as $key => $val) {
+                $query->where($val[0], $val[1], $val[2]);
+            }
+        }
+        // dd($query);
         $query->orderBy('created_at', 'desc');
+
         return $query->paginate($perPage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
     }
 

@@ -19,8 +19,16 @@ class PostCatalogueRepository extends BaseRepository implements PostCatalogueRep
         // dd($model);
         $this->model = $model;
     }
-    public function pagination($column = ['*'], $condition = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [], $join = [])
-    {
+    public function pagination(
+        $column = ['*'],
+        $condition = [],
+        int $perPage = 1,
+        array $extend = [],
+        array $orderBy = [],
+        $join = [],
+        array $relations = [],
+        array $rawQuery = [],
+    ) {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%')
