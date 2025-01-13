@@ -6,6 +6,7 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 
+
 /**
  * Interface UserServiceInterface
  * @package App\Services\Interfaces
@@ -90,5 +91,14 @@ class BaseRepository implements BaseRepositoryInterface
         // dd($payload);
 
         return $model->{$relation}()->attach($model->id, $payload);
+    }
+    public function updateByWhere($condition = [], array $payload = [])
+    {
+        // dd($condition);
+        $query = $this->model->withTrashed();
+        foreach ($condition as $key => $val) {
+            $query->where($val[0], $val[1], $val[2]);
+        }
+        return $query->update($payload);
     }
 }

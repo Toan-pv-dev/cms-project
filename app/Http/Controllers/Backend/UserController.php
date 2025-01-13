@@ -31,13 +31,17 @@ class UserController extends Controller
         // dd(config('apps.user'));
         $config = [
             'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',
-
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
+                '/backend/plugins/ckfinder_2/ckfinder.js',
+                '/backend/library/finder.js',
+                '/backend/library/seo.js',
+                '/backend/plugins/ckeditor/ckeditor.js',
             ],
             'css' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css',
+
             ],
             'model' => 'User'
         ];
@@ -58,9 +62,27 @@ class UserController extends Controller
 
     public function create()
     {
+        $config = [
+            'js' => [
+                'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
+                '/backend/plugins/ckfinder_2/ckfinder.js',
+                '/backend/library/finder.js',
+                '/backend/library/seo.js',
+                '/backend/plugins/ckeditor/ckeditor.js',
+                '/backend/library/location.js',
+
+            ],
+            'css' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css',
+
+            ],
+            'model' => 'User'
+        ];
         $provinces = $this->provinceRepository->all();
         // dd($location);
-        $config = $this->configData();
+        // $config = $this->configData();
         $config['seo'] = config('apps.user');
         $config['method'] = 'create';
         $template = 'backend.user.user.store';
@@ -134,16 +156,19 @@ class UserController extends Controller
     }
     private function configData()
     {
-        return [
+        return  [
             'js' => [
-                '/backend/library/location.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 '/backend/plugins/ckfinder_2/ckfinder.js',
-                '/backend/library/finder.js'
-
+                '/backend/library/finder.js',
+                '/backend/library/seo.js',
+                '/backend/plugins/ckeditor/ckeditor.js',
             ],
             'css' => [
-                'css' => 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
+                'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.css',
+
             ]
         ];
     }

@@ -26,7 +26,11 @@
                     IN+
                 </div>
             </li>
-            @foreach (config('apps.module.module') as $key => $val)
+            @php
+                $sidebarModules = __('sidebar.module');
+                // dd($sidebarModules); // Uncomment để debug
+            @endphp
+            @foreach ($sidebarModules as $key => $val)
                 <li class="{{ in_array($segment, $val['name']) ? 'active' : '' }}">
                     <a href="#">
                         {!! $val['icon'] !!} <span class="nav-label">{{ $val['title'] }}</span>

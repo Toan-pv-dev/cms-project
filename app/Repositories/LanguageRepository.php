@@ -19,8 +19,16 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
         // dd($model);
         $this->model = $model;
     }
-    public function pagination($column = ['*'], $condition = [], int $perPage = 1, array $extend = [], array $relations = [], array $orderBy = [], $join = [])
-    {
+    public function pagination(
+        $column = ['*'],
+        $condition = [],
+        int $perPage = 1,
+        array $extend = [],
+        array $orderBy = [],
+        $join = [],
+        array $relations = [],
+        array $rawQuery = [],
+    ) {
         // dd($condition['publish']);
         // dd($this->$model);
         // dd($relations);
@@ -28,8 +36,6 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%')
                     ->orWhere('description', 'LIKE', '%' . $condition['keyword'] . '%');
-                // ->orWhere('address', 'LIKE', '%' . $condition['keyword'] . '%')
-                // ->orWhere('phone', 'LIKE', '%' . $condition['keyword'] . '%');
             }
             if (isset($condition['publish']) && $condition['publish'] !== null) {
                 if ($condition['publish'] != -1) {
@@ -52,4 +58,8 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
         // dd($relations);
         return $query->paginate($perPage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
     }
+    // public function findCurrentLanguage()
+    // {
+    //     return $this->model->select('canonical')->where('current', '=', '1');
+    // }
 }

@@ -48,7 +48,7 @@
         $('.upload-image').click(function () {
             let input = $(this)
             let type = input.attr('data-type')
-            HT.SetupCkFinder2(input, type);
+            HT.showSelectedImageUrl(input, type);
         })
     }
 
@@ -83,6 +83,15 @@
         }
         finder.popup();
     }
+    HT.showSelectedImageUrl = (inputElement, type) => {
+        var finder = new CKFinder();
+        finder.resourceType = type;
+        finder.selectActionFunction = function (fileUrl, data) {
+            inputElement.val(fileUrl); // Đặt giá trị URL vào input
+        };
+        finder.popup();
+    };
+
     HT.SetupCkFinder2 = (object, type, target) => {
         if (typeof (type) == 'undefined') {
             type = 'Images'

@@ -34,12 +34,7 @@ class LanguageService  implements LanguageServiceInterface
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
         $perpage = $request->integer('perpage');
-        // dd($perpage);
-        $languages = $this->languageRepository->pagination($select, $condition, $perpage, ['path' => 'language/index'], [], [], '');
-        // dd($languages);
-        // echo 1;
-        // die();
-        // dd($languages);
+        $languages = $this->languageRepository->pagination($select, $condition, $perpage, ['path' => 'language/index'], [], [], []);
         return $languages;
     }
 
@@ -141,6 +136,27 @@ class LanguageService  implements LanguageServiceInterface
             }
             $payload[$post['field']] = $value;
             $this->userRepository->updateByWhereIn('user_catalogue_id', $array, $payload);
+            DB::commit();
+            return true; // Phải trả về true nếu cập nhật thành công
+        } catch (\Exception $e) {
+            DB::rollBack();
+            echo $e->getMessage();
+            // die();
+            return false; // Trả về false nếu có lỗi
+        }
+    }
+
+    public function switch($id)
+    {
+        // dd($post);
+        DB::beginTransaction();
+        try {
+            $language = $this->languageRepository->update($id, ['current' => 1]);
+            $payload = ['current' => 0];
+            $where = [
+                ['id', '!=', $id]
+            ];
+            $this->languageRepository->updateByWhere($where, $payload);
             DB::commit();
             return true; // Phải trả về true nếu cập nhật thành công
         } catch (\Exception $e) {

@@ -1,6 +1,6 @@
 <div class="row border-bottom">
 
-    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+    <nav class="navbar navbar-static-top white-bg " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
             </a>
@@ -11,16 +11,26 @@
                 </div>
             </form>
         </div>
+        {{-- @php
+            dd($language);
+        @endphp --}}
         <ul class="nav navbar-top-links navbar-right">
             <li>
-                <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                <div class="uk-flex uk-flex-middle">
+                    @foreach ($language as $key => $val)
+                        <a
+                            href="{{ route('language.switch', $val->id) }}"class="image img-cover language-item {{ $val->current == 1 ? 'active' : '' }}"><img
+                                class="img-cover  " src="{{ $val->image }}" alt="">
+                        </a>
+                    @endforeach
+                </div>
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
-                    <li>
+                    <li style="width: 100%">
                         <div class="dropdown-messages-box">
                             <a href="profile.html" class="pull-left">
                                 <img alt="image" class="img-circle" src="img/a7.jpg">

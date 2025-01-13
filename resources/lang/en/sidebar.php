@@ -3,59 +3,45 @@
 return [
     'module' => [
         [
-            'title' => 'Quản lý người dùng',
+            'title' => 'User Management',
             'icon' => '<i class="fa fa-users"></i>',
             'name' => ['user'],
             'subModule' => [
                 [
-                    'title' => 'Quản lý thành viên',
+                    'title' => 'Member Management',
                     'route' => 'user.index'
-
                 ],
                 [
-                    'title' => 'Quản lý nhóm thành viên',
+                    'title' => 'Member Group Management',
                     'route' => 'user.catalogue.index'
                 ]
-
             ]
         ],
         [
-            'title' => 'Quản lý bài viết',
+            'title' => 'Post Management',
             'icon' => '<i class="fa fa-file-text"></i>',
             'name' => ['post'],
             'subModule' => [
                 [
-                    'title' => 'Quản lý nhóm bài viết',
+                    'title' => 'Post Group Management',
                     'route' => 'post.catalogue.index'
-
                 ],
                 [
-                    'title' => 'Quản lý bài viết',
+                    'title' => 'Post Management',
                     'route' => 'post.index'
-
-
                 ],
-
-
             ]
         ],
         [
-            'title' => 'Cấu hình chung',
+            'title' => 'General Configuration',
             'icon' => '<i class="fa fa-cog"></i>',
             'name' => ['language', 'system'],
             'subModule' => [
                 [
-                    'title' => 'Quản lý ngôn ngữ',
+                    'title' => 'Language Management',
                     'route' => 'language.index'
-
                 ]
-
             ]
         ]
     ]
-
-
-
-
-
 ];

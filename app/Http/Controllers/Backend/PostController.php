@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Services\Interfaces\PostServiceInterface as PostService;
+use App\Repositories\LanguageRepository as LanguageRepository;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Requests\DeletePostRequest;
@@ -18,9 +19,11 @@ class PostController extends Controller
     protected $postRepository;
     protected $nestedset;
     protected $language;
+    protected $languageRepository;
 
 
-    public function __construct(PostService $postService, PostRepository $postRepository)
+
+    public function __construct(PostService $postService, PostRepository $postRepository, LanguageRepository $languageRepository)
     {
         $this->postService = $postService;
         $this->postRepository = $postRepository;
@@ -32,6 +35,7 @@ class PostController extends Controller
             ]
         );
         $this->language = $this->currentLanguage();
+        $this->languageRepository = $languageRepository;
     }
     private function getDropdown()
     {
@@ -53,6 +57,8 @@ class PostController extends Controller
         ];
         $config['seo'] = config('apps.post');
         $dropdown = $this->getDropdown();
+        // $language = $this->languageRepository->all();
+        // dd($language);
         $posts = $this->postService->paginate($request);
 
         $template = 'backend.post.post.index';
@@ -60,7 +66,7 @@ class PostController extends Controller
             'template',
             'config',
             'posts',
-            'dropdown'
+            'dropdown',
 
         ));
     }

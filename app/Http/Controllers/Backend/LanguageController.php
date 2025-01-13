@@ -8,6 +8,7 @@ use App\Http\Requests\StoreLanguageRequest;
 use App\Http\Requests\UpdateLanguageRequest;
 use Illuminate\Http\Request;
 use App\Repositories\LanguageRepository as languageRepository;
+use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {
@@ -141,5 +142,21 @@ class LanguageController extends Controller
                 '/backend/library/finder.js',
             ],
         ];
+    }
+
+    public function switchBackendLanguage($id)
+    {
+        // dd($currentLang);
+        $locale = $this->languageRepository->findById($id);
+
+        // dd($locale->canonical);
+        if ($this->languageService->switch($id)) {
+
+            App::setLocale($locale->canonical);
+            session(['locale' => $locale->canonical]);
+        }
+        // dd(App::getLocale());
+
+        return redirect()->back();
     }
 }
