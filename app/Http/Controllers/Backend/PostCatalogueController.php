@@ -128,6 +128,7 @@ class PostCatalogueController extends Controller
     }
     public function update(UpdatePostCatalogueRequest $updaterequest, $id)
     {
+
         if ($this->postCatalogueService->update($id, $updaterequest)) {
             flash()->success('Cap nhat ban ghi thanh cong');
             return redirect()->route('post.catalogue.index');

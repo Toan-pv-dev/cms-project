@@ -15,14 +15,7 @@ class UpdatePostRequest extends FormRequest
 
         return [
             'name' => 'required',
-            'canonical' => [
-                'required',
-                Rule::unique('post_language', 'canonical')
-                    ->ignore($this->post_id, 'post_id')
-                    ->where(function ($query) {
-                        return $query->where('canonical', '!=', $this->canonical);
-                    }),
-            ],
+            'canonical' => 'required|unique:routers,canonical,' . $this->id . ' module_id',
             'post_catalogue_id' => "gt:0",
 
         ];
@@ -37,3 +30,13 @@ class UpdatePostRequest extends FormRequest
         ];
     }
 }
+
+
+// 'canonical' => [
+//     'required',
+//     Rule::unique('post_language', 'canonical')
+//         ->ignore($this->post_id, 'post_id')
+//         ->where(function ($query) {
+//             return $query->where('canonical', '!=', $this->canonical);
+//         }),
+// ],

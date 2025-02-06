@@ -55,12 +55,13 @@ class PostController extends Controller
             ],
             'model' => 'post'
         ];
-        $config['seo'] = config('apps.post');
+        $config['seo'] = __('messages.postCatalogue');
+        // dd($config['seo']);
         $dropdown = $this->getDropdown();
         // $language = $this->languageRepository->all();
         // dd($language);
         $posts = $this->postService->paginate($request);
-
+        // dd($posts);
         $template = 'backend.post.post.index';
         return view('backend.dashboard.layout', compact(
             'template',

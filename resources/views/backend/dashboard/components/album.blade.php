@@ -35,11 +35,14 @@
                 <div class="upload-list {{ $isAlbumEmpty && !old('album') ? 'hidden' : '' }}">
                     <ul id="sortable" class="clearfix data-album sortui ui-sortable">
                         @foreach (old('album', $album) as $key => $val)
+                            @php
+                                $imageUrl = is_object($val) ? $val->url ?? '' : $val;
+                            @endphp
                             <li class="ui-state-default">
                                 <div class="thumb">
                                     <span class="span image img-scaledown">
-                                        <img src="{{ $val }}" alt="{{ $val }}">
-                                        <input type="hidden" name="album[]" value="{{ $val }}">
+                                        <img src="{{ $imageUrl }}" alt="{{ $imageUrl }}">
+                                        <input type="hidden" name="album[]" value="{{ $imageUrl }}">
                                     </span>
                                     <button class="delete-image">
                                         <i class="fa fa-trash"></i>
@@ -47,6 +50,7 @@
                                 </div>
                             </li>
                         @endforeach
+
                     </ul>
                 </div>
             </div>

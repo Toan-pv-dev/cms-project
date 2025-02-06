@@ -78,9 +78,9 @@ return [
     |
     */
 
-    'locale' => 'en',  // hoặc 'en' tùy ngôn ngữ mặc định bạn muốn
+    'locale' => 'vi',  // hoặc 'en' tùy ngôn ngữ mặc định bạn muốn
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'vi',
 
     'faker_locale' => 'en_US',
 

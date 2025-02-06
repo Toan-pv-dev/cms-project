@@ -20,7 +20,6 @@
 <form action="{{ $url }}" class="box" method="post">
     @csrf
 
-    {{-- <p>{{ $url }}</p> --}}
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-9">
@@ -46,10 +45,6 @@
             </button>
         </div>
 
-        {{-- <div class="text-right mb10">
-                <button class="btn btn-w-m btn-primary" type="submit" name="send" value="send">
-                    Lưu lại
-                </button>
-            </div> --}}
+
     </div>
 </form>

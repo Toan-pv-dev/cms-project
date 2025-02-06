@@ -82,6 +82,9 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::get('delete/{id}', [PostController::class, 'delete'])->name('post.delete');
         Route::post('destroy/{id}', [PostController::class, 'destroy'])->name('post.destroy');
     });
+
+
+    Route::get('dashboard/index', [DashboardController::class, 'index'])->where(['id' => '[0-9]+'])->name('dashboard.index');
 });
 
 
@@ -91,10 +94,6 @@ Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboard::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 Route::post('ajax/dashboard/changeStatusAll', [AjaxDashboard::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll');
 
-
-
-
-// Login
+// AuthAuth
 Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
-Route::get('dashboard/index', [DashboardController::class, 'index'])->where(['id' => '[0-9]+'])->name('dashboard.index');

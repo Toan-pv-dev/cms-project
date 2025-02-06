@@ -11,7 +11,7 @@
                     @for ($i = 20; $i <= 200; $i += 20)
                         <option {{ $perpage == $i ? 'selected' : '' }} value="{{ $i }}">
                             {{ $i }}
-                            ban ghi</option>
+                            {{ __('messages.postCatalogue.record') }}</option>
                     @endfor
                 </select>
             </div>
@@ -44,7 +44,7 @@
                             </option>
                         @endforeach
                     @else
-                        <option value="-1">No options available</option>
+                        <option value="-1">{{ __('messages.postCatalogue.available_option') }} </option>
                     @endif
 
                 </select>
@@ -53,13 +53,14 @@
             <div class="search-input-form col-lg-4 col-md-6 mb-2 mr5">
                 <input type="text" name="keyword" class="form-control w-100" placeholder="Enter your keys"
                     value="{{ request('keyword') }}">
-                <button type="submit" class="btn btn-info w-100" style="background-color: #1ab394;">Tìm
-                    kiếm</button>
+                <button type="submit" class="btn btn-info w-100"
+                    style="background-color: #1ab394;">{{ __('messages.postCatalogue.search') }} </button>
             </div>
+
             <div class="filter-add-component ">
                 <a href="{{ route('post.catalogue.create') }}"><button type="button" class="btn btn-warning w-100">
-                        <i style="margin-right: 6px" class="glyphicon glyphicon-plus"></i>Thêm mới nhóm bài
-                        viết</button></a>
+                        <i style="margin-right: 6px"
+                            class="glyphicon glyphicon-plus"></i>{{ __('messages.postCatalogue.create_index') }}</button></a>
             </div>
         </div>
     </div>

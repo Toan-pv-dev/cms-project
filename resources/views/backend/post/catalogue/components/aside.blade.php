@@ -1,13 +1,13 @@
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Chọn thư mục cha</h5>
+        <h5>{{ __('messages.postCatalogue.parent_id') }}</h5>
 
     </div>
     <div class="ibox-content">
         <div class="row ">
             <div class="col-lg-12 mb10">
                 <div class="form-row">
-                    <p><span class="text-danger notice">Chọn Root nêú không tồn tại thư mục cha (*)</span>
+                    <p><span class="text-danger notice">{{ __('messages.postCatalogue.note-parent_id') }} </span>
                     </p>
 
                     <select type="text" name="parent_id" value="{{ old('parent_id', $postCatalogue->name ?? '') }}"
@@ -30,7 +30,7 @@
 
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Chọn ảnh đại diện</h5>
+        <h5>{{ __('messages.postCatalogue.note-post_image') }}</h5>
     </div>
     <div class="ibox-content">
         <div class="row ">
@@ -56,9 +56,10 @@
         <div class="row ">
             <div class="col-lg-12 mb10">
                 <div class="form-row">
-                    <label class="control-label text-left " for="">Nhóm thành viên</label>
+                    <label class="control-label text-left "
+                        for="">{{ __('messages.postCatalogue.publish_status') }}</label>
                     <div class="user_option_form ">
-                        <select class="form-control setupSelect2" name="publish" id="">[Chon nhom thanh vien]
+                        <select class="form-control setupSelect2" name="publish" id="">
                             @foreach (config('apps.general.publish') as $key => $item)
                                 {
                                 <option
@@ -72,10 +73,10 @@
             </div>
             <div class="col-lg-12 mb10">
                 <div class="form-row">
-                    <label class="control-label text-left " for="">Nhóm thành viên</label>
+                    <label class="control-label text-left "
+                        for="">{{ __('messages.postCatalogue.follow_status') }}</label>
                     <div class="user_option_form ">
-                        <select class="form-control setupSelect2" name="follow" id="follow">[Chon nhom
-                            thanh vien]
+                        <select class="form-control setupSelect2" name="follow" id="follow">
                             @foreach (config('apps.general.follow') as $key => $item)
                                 {
                                 <option

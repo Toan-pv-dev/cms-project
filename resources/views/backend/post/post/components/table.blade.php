@@ -12,6 +12,7 @@
         </tr>
     </thead>
     <tbody>
+        {{-- @dd($posts); --}}
         @if (isset($posts) && is_object($posts))
             @foreach ($posts as $post)
                 <tr id="{{ $post->id }}">

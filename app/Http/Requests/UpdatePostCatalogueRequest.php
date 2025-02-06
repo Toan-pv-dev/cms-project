@@ -21,9 +21,11 @@ class UpdatePostCatalogueRequest extends FormRequest
      */
     public function rules(): array
     {
+        // echo 1;
+        // die();
         return [
             'name' => 'required|string',
-            'canonical' => 'required|unique:post_catalogue_language,canonical,' . $this->id . ',post_catalogue_id',
+            'canonical' => 'required|unique:routers,canonical,' . $this->id . ' module_id',
 
 
 

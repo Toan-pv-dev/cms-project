@@ -33,12 +33,22 @@ use App\Services\UserService;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
 
+use App\Services\Interfaces\RouterServiceInterface;
+use App\Repositories\RouterRepository;
+use App\Services\RouterService;
+use App\Repositories\Interfaces\RouterRepositoryInterface;
+
+
+
 use App\Repositories\Interfaces\ProvinceRepositoryInterface;
 use App\Repositories\ProvinceRepository;
 use App\Repositories\Interfaces\DistrictRepositoryInterface;
 use App\Repositories\DistrictRepository;
 use App\Repositories\WardRepository;
 use App\Repositories\Interfaces\WardRepositoryInterface;
+
+
+
 
 
 
@@ -63,6 +73,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(PostServiceInterface::class, PostService::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
+
+        $this->app->bind(RouterRepositoryInterface::class, RouterRepository::class);
     }
 
     public function boot(): void

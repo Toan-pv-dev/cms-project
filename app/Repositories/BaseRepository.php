@@ -59,10 +59,11 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function update(int $id = 0, array $payload = [])
     {
-
+        // echo 1;
+        // die();
         $model = $this->findById($id);
-        // dd($id);
         return $model->update($payload);
+
         // Update the model instance with the provided data
     }
 
@@ -86,16 +87,29 @@ class BaseRepository implements BaseRepositoryInterface
     {
         $this->model->whereIn($whereInField, $whereIn)->update($payload);
     }
+
+    public function findByCondition(array $condition = [])
+    {
+
+        $query = $this->model->newQuery();
+        // dd($condition);
+        foreach ($condition as $key => $val) {
+            // dd($val[0]);
+            $query->where($val[0], $val[1], $val[2]);
+        }
+
+        return $query->first();
+    }
     public function createPivot($model, array $payload = [], string $relation = '')
     {
-        // dd($payload);
 
         return $model->{$relation}()->attach($model->id, $payload);
     }
+
     public function updateByWhere($condition = [], array $payload = [])
     {
         // dd($condition);
-        $query = $this->model->withTrashed();
+        $query = $this->model->newQuery();
         foreach ($condition as $key => $val) {
             $query->where($val[0], $val[1], $val[2]);
         }

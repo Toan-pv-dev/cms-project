@@ -59,8 +59,8 @@
                                     <span class="count_meta-title">0 ký tự </span>
                                 </div>
                             </label>
-                            <textarea type="text" name="meta_description" class="form-control meta_description-post-catalouge"
-                                autocomplete="off">{{ trim(old('meta_description', $postCatalogue->meta_description ?? '')) }}</textarea>
+                            {{-- {{ $postCatalogue->meta_description }} --}}
+                            <textarea type="text" name="meta_description" class="form-control meta_description-post-catalouge">{{ old('meta_description', $postCatalogue->meta_description ?? '') }}</textarea>
 
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             </label>
                             <div class="input-container">
                                 <input type="text" name="canonical"
-                                    value="{{ old('meta_description', $postCatalogue->meta_description ?? '') }}"
+                                    value="{{ old('canonical', $postCatalogue->canonical ?? '') }}"
                                     class="form-control " placeholder="" autocomplete="off">
                                 <span class="baseUrl">{{ config('app.url') }}</span>
                             </div>

@@ -4,10 +4,12 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use App\Services\Interfaces\PostServiceInterface;
-use App\Repositories\Interfaces\PostRepositoryInterface as PostRepository;
+use App\Repositories\PostRepository as PostRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\BaseService;
+use App\Repositories\RouterRepository as RouterRepository;
+
 use Illuminate\Support\Str;
 
 
@@ -19,9 +21,12 @@ class PostService  extends BaseService implements PostServiceInterface
 {
     protected $postRepository;
     protected $nestedSet;
-    public function __construct(PostRepository $postRepository)
+    protected $controllerName = 'PostController';
+
+    public function __construct(PostRepository $postRepository, RouterRepository $routerRepository)
     {
         $this->postRepository = $postRepository;
+        $this->routerRepository = $routerRepository;
     }
     public function select()
     {
@@ -68,6 +73,7 @@ class PostService  extends BaseService implements PostServiceInterface
             if ($post->id > 0) {
                 $this->updateLanguageForPost($post, $request);
                 $this->updateCatalogueForPost($post, $request);
+                $this->createRouter($post, $request, $this->controllerName);
             }
             DB::commit();
             return $post;
@@ -92,6 +98,7 @@ class PostService  extends BaseService implements PostServiceInterface
 
                 $this->updateLanguageForPost($post, $request);
                 $this->updateCatalogueForPost($post, $request);
+                $this->updateRouter($post, $request, $this->controllerName);
             }
             DB::commit();
 
@@ -191,11 +198,7 @@ class PostService  extends BaseService implements PostServiceInterface
         // dd($id);
         return $this->postRepository->update($id, $payload);
     }
-    private function formatAlbum($album = null)
-    {
-        // dd($payload);
-        return !empty($album) ? json_encode($album) : '';
-    }
+
 
     private function updateLanguageForPost($post, $request)
     {
