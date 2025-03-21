@@ -67,9 +67,9 @@ class BaseRepository implements BaseRepositoryInterface
         // Update the model instance with the provided data
     }
 
-    public function all()
+    public function all(array $relation = [])
     {
-        return $this->model->all();
+        return $this->model->with($relation)->get();
     }
 
     public function findById(int $model_id,  array $column = ['*'], array $relation = [])
@@ -104,6 +104,11 @@ class BaseRepository implements BaseRepositoryInterface
     {
 
         return $model->{$relation}()->attach($model->id, $payload);
+    }
+    public function createTranslatePivot($model, array $payload = [], string $relation = '', string $relation_id = '')
+    {
+        // dd($model->{$relation}()->attach($relation_id, $payload));
+        return $model->{$relation}()->attach($relation_id, $payload);
     }
 
     public function updateByWhere($condition = [], array $payload = [])

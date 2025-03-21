@@ -62,6 +62,7 @@
                                     class="fa fa-edit"></i></a>
                             <a class="btn btn-warning" href="{{ route('user.delete', $user->id) }}"><i
                                     class="fa fa-trash-o"></i></a>
+
                         </div>
                     </td>
                 </tr>

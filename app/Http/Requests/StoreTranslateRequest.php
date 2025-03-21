@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostCatalogueRequest extends FormRequest
+class StoreTranslateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,22 +21,18 @@ class UpdatePostCatalogueRequest extends FormRequest
      */
     public function rules(): array
     {
-        // echo 1;
-        // die();
-        // dd($this->module_id);
         return [
-            'name' => 'required|string',
-            'canonical' => 'required|unique:routers,canonical,' . $this->route('id') . ',id,module_id,' . $this->module_id,
+            'translate_name' => 'required|string',
+            'translate_canonical' => 'required|string|unique:routers,canonical, ' . $this->id . ',module_id',
+
+
         ];
     }
     public function messages(): array
     {
         return [
-            'name.required' => 'Bạn chưa nhập tên',
-            'canonical.required' => 'Bạn chưa nhập đường dẫn ',
-            'canonical.unique' => 'Đường dẫn đã tồn tại ',
-            // 'parent_id.gt' => 'Chưa có mục cha'
-
+            'translate_name.required' => 'Bạn chưa nhập tên',
+            'translate_canonical.required' => 'Bạn chưa nhập mô tả'
         ];
     }
 }

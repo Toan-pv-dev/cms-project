@@ -4,11 +4,11 @@
         <div class="ibox float-e-margins">
 
             {{-- <h5>{{ config('apps.user.tiltle') }}</h5> --}}
-            @include('backend.dashboard.components.toolbox', ['model' => 'user'])
+            @include('backend.dashboard.components.toolbox', ['model' => 'permission'])
 
             <div class="ibox-content">
-                @include('backend.user.user.components.filter')
-                @include('backend.user.user.components.table')
+                @include('backend.permission.components.filter')
+                @include('backend.permission.components.table')
             </div>
         </div>
     </div>

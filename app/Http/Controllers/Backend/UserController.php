@@ -10,9 +10,13 @@ use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository as RepositoriesUserRepository;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
+
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     protected $userService;
     protected $provinceRepository;
     protected $userRepository;
@@ -29,6 +33,12 @@ class UserController extends Controller
 
         // dd(config('apps.module'));
         // dd(config('apps.user'));
+        // if (!Gate::allows('modules', 'user.catalogue.index')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+
+        // $this->authorize('modules', 'post.catalogue.index');
+
         $config = [
             'js' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',

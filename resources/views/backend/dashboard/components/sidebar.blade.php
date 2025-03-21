@@ -39,7 +39,11 @@
                     <ul class="nav nav-second-level">
                         @foreach ($val['subModule'] as $subModule)
                             <li>
-                                <a href="{{ route($subModule['route']) }}">{{ $subModule['title'] }}</a>
+                                @if (!empty($subModule['route']))
+                                    <a href="{{ route($subModule['route']) }}">{{ $subModule['title'] }}</a>
+                                @else
+                                    <a href="javascript:void(0)">{{ $subModule['title'] }}</a>
+                                @endif
                             </li>
                         @endforeach
                     </ul>

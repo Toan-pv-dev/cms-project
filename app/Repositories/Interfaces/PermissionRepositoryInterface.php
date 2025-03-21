@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Interfaces;
+namespace App\Repositories\Interfaces;
 
 /**
  * Interface UserServiceInterface
  * @package App\Services\Interfaces
  */
-interface LanguageServiceInterface {}
+interface PermissionRepositoryInterface {}

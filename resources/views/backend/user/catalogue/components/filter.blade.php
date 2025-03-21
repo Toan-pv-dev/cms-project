@@ -21,20 +21,6 @@
             @endphp
             <div class="right-component-filter col-lg-8 col-md-6 mb-2 mr-10 " style="padding:0">
                 <div class="perpage-select col-lg-3">
-                    {{-- <select name="publish" class="form-control publish">
-                        <option value="-1" selected>Chon thanh vien</option>
-                        @foreach ($publishArray as $key => $val)
-                            {
-                            <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">
-                                {{ $val }}
-                            </option>
-
-                            }
-                        @endforeach
-
-                    </select> --}}
-                </div>
-                <div class="perpage-select col-lg-3">
                     <select name="publish" class="form-control publish">
                         @if (is_array(config('apps.general.publish')))
                             @foreach (config('apps.general.publish') as $key => $val)
@@ -46,7 +32,6 @@
                         @else
                             <option value="-1">No options available</option>
                         @endif
-
                     </select>
                 </div>
 
@@ -57,8 +42,13 @@
                         kiếm</button>
                 </div>
                 <div class="filter-add-component ">
+                    <a href="{{ route('user.catalogue.permission') }}"><button type="button"
+                            class="btn btn-warning w-100 mr10">
+                            <i style="margin-right: 6px" class="fa fa-key"></i>Phân quyền</button></a>
+                </div>
+                <div class="filter-permission-component ">
                     <a href="{{ route('user.catalogue.create') }}"><button type="button" class="btn btn-warning w-100">
-                            <i style="margin-right: 6px" class="glyphicon glyphicon-plus"></i>Thêm mới nhóm thành
+                            <i style="margin-right: 6px" class="fa fa-plus"></i>Thêm mới nhóm thành
                             viên</button></a>
                 </div>
             </div>

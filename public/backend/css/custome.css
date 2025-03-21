@@ -239,6 +239,12 @@ input[name=canonical] {
 
 }
 
+input[name=translate_canonical] {
+    color: blue;
+    font-weight: 600;
+
+}
+
 
 .clearfix::before {
     content: "";
@@ -441,4 +447,10 @@ input[name=canonical] {
     margin-top: 5px !important;
     padding-bottom: 18px !important;
     margin-bottom: 5px !important;
+}
+
+.language-table th {
+    vertical-align: middle !important;
+    text-align: center !important;
+
 }

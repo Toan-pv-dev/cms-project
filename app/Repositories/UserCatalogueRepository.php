@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\UserCatalogue;
 use App\Repositories\Interfaces\UserCatalogueRepositoryInterface;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class UserService
@@ -54,9 +55,10 @@ class UserCatalogueRepository extends BaseRepository implements UserCatalogueRep
         if (!empty($join)) {
             $query->join(...$join);
         }
-        // echo 1;
-        // die();
-        // dd($relations);
         return $query->paginate($perPage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
+    }
+    public function detachAllPermissions()
+    {
+        return DB::table('user_catalogue_permisson')->truncate(); // Hoặc cách khác phù hợp với bảng trung gian của bạn
     }
 }

@@ -11,6 +11,7 @@
             <th>Action</th>
         </tr>
     </thead>
+    {{-- @dd($languages); --}}
     <tbody>
         @if (isset($languages) && is_object($languages))
             @foreach ($languages as $language)

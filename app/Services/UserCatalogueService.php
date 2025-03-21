@@ -26,11 +26,11 @@ class UserCatalogueService  implements UserCatalogueServiceInterface
     }
     public function paginate($request)
     {
-
-
         $select = $this->select();
-        $condition['keyword'] = addslashes($request->input('keyword'));
-        $condition['publish'] = $request->input('publish');
+        $condition = [
+            'keyword' => addslashes($request->input('keyword')),
+            'publish' => $request->input('publish'),
+        ];
         $perpage = $request->integer('perpage');
 
         $userCatalogues = $this->userCatalogueRepository->pagination($select, $condition, $perpage, ['path' => 'user/catalogue/index'], ['users'], []);
@@ -144,6 +144,29 @@ class UserCatalogueService  implements UserCatalogueServiceInterface
             echo $e->getMessage();
             die();
             return false; // Trả về false nếu có lỗi
+        }
+    }
+    public function setPermission($request)
+    {
+        DB::beginTransaction();
+        try {
+            $permissions = $request->input('permission', []);
+
+            if (empty($permissions)) {
+                $this->userCatalogueRepository->detachAllPermissions(); // Now inside transaction
+            } else {
+                foreach ($permissions as $key => $value) {
+                    $userCatalogue = $this->userCatalogueRepository->findById($key);
+                    $userCatalogue->permissions()->sync($value);
+                }
+            }
+
+            DB::commit(); // Now it's safe to commit
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            echo $e->getMessage();
+            return false;
         }
     }
 }

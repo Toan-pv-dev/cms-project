@@ -10,16 +10,19 @@ use App\Http\Requests\UpdateUserCatalogueRequest;
 use Illuminate\Http\Request;
 // use App\Http\Requests\UpdateUserCatalogueRequest;
 use App\Repositories\UserCatalogueRepository as userCatalogueRepository;
+use App\Repositories\PermissionRepository as permissionRepository;
 
 class UserCatalogueController extends Controller
 {
     protected $userCatalogueService;
     protected $userCatalogueRepository;
+    protected $permissionRepository;
 
-    public function __construct(userCatalogueService $userCatalogueService, userCatalogueRepository $userCatalogueRepository)
+    public function __construct(userCatalogueService $userCatalogueService, userCatalogueRepository $userCatalogueRepository, permissionRepository $permissionRepository)
     {
         $this->userCatalogueService = $userCatalogueService;
         $this->userCatalogueRepository = $userCatalogueRepository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function index(Request $request)
@@ -146,5 +149,28 @@ class UserCatalogueController extends Controller
             flash()->error('Xoa ban ghi khong thanh cong');
             return redirect()->route('user.catalogue.index');
         }
+    }
+    public function permission()
+    {
+        $userCatalogues = $this->userCatalogueRepository->all(['permissions']);
+        $permissions = $this->permissionRepository->all();
+        $config['seo'] = __('messages.userCatalogue');
+        $template = 'backend.user.catalogue.permission';
+        return view('backend.dashboard.layout', compact(
+            'template',
+            'userCatalogues',
+            'permissions',
+            'config'
+        ));
+    }
+
+    public function updatePermission(Request $request)
+    {
+        if ($this->userCatalogueService->setPermission($request)) {
+            flash()->success('Cập nhật quyền thành công');
+            return redirect()->route('user.catalogue.index');
+        }
+        flash()->error('Cập nhật quyền không thành công');
+        return redirect()->route('user.catalogue.index');
     }
 }

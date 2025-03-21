@@ -11,6 +11,9 @@ use App\Http\Controllers\Ajax\LocationController;
 use App\Http\Controllers\Backend\LanguageController;
 use App\Http\Controllers\backend\PostCatalogueController;
 use App\Http\Controllers\backend\PostController;
+use App\Http\Controllers\Backend\PermissionController;
+// use CKSource\CKFinder\Acl\Permission;
+
 
 // use App\Http\Middleware\LoginMiddleware;
 
@@ -44,11 +47,12 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::post('update/{id}', [UserCatalogueController::class, 'update'])->name('user.catalogue.update');
         Route::get('delete/{id}', [UserCatalogueController::class, 'delete'])->name('user.catalogue.delete');
         Route::post('destroy/{id}', [UserCatalogueController::class, 'destroy'])->name('user.catalogue.destroy');
+        Route::get('permission', [UserCatalogueController::class, 'permission'])->name('user.catalogue.permission');
+        Route::post('upDatePermission', [UserCatalogueController::class, 'updatePermission'])->name('user.catalogue.updatePermission');
     });
 
     //language
     Route::group(['prefix' => 'language'], function () {
-
         Route::post('store', [LanguageController::class, 'store'])->name('language.store');
         Route::get('index', [LanguageController::class, 'index'])->name('language.index');
         Route::get('create', [LanguageController::class, 'create'])->name('language.create');
@@ -57,6 +61,8 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::get('delete/{id}', [LanguageController::class, 'delete'])->name('language.delete');
         Route::post('destroy/{id}', [LanguageController::class, 'destroy'])->name('language.destroy');
         Route::get('switch/{id}', [LanguageController::class, 'switchBackendLanguage'])->name('language.switch');
+        Route::get('{id}/{languageId}/{model}/translate', [LanguageController::class, 'translate'])->name('language.translate');
+        Route::post('storeTranslate', [LanguageController::class, 'storeTranslate'])->name('language.storeTranslate');
     });
 
     //post_catalogue
@@ -83,6 +89,16 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::post('destroy/{id}', [PostController::class, 'destroy'])->name('post.destroy');
     });
 
+    Route::group(['prefix' => 'permission/'], function () {
+
+        Route::post('store', [PermissionController::class, 'store'])->name('permission.store');
+        Route::get('index', [PermissionController::class, 'index'])->name('permission.index');
+        Route::get('create', [PermissionController::class, 'create'])->name('permission.create');
+        Route::get('edit/{id}', [PermissionController::class, 'edit'])->name('permission.edit');
+        Route::post('update/{id}', [PermissionController::class, 'update'])->name('permission.update');
+        Route::get('delete/{id}', [PermissionController::class, 'delete'])->name('permission.delete');
+        Route::post('destroy/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
+    });
 
     Route::get('dashboard/index', [DashboardController::class, 'index'])->where(['id' => '[0-9]+'])->name('dashboard.index');
 });

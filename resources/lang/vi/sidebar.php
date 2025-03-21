@@ -5,7 +5,7 @@ return [
         [
             'title' => 'Quản lý người dùng',
             'icon' => '<i class="fa fa-users"></i>',
-            'name' => ['user'],
+            'name' => ['user', 'permission'],
             'subModule' => [
                 [
                     'title' => 'Quản lý thành viên',
@@ -35,10 +35,15 @@ return [
 
 
                 ],
+                [
+                    'title' => 'Quản lý quyền',
+                    'route' => 'permission.index'
+                ],
 
 
             ]
         ],
+
         [
             'title' => 'Cấu hình chung',
             'icon' => '<i class="fa fa-cog"></i>',

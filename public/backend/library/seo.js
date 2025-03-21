@@ -20,6 +20,17 @@
 
             $('.canonical').html(BASE_URL + value + SUFFIX);
         });
+        $('input[name=translate_canonical]').css({
+            'padding-left': parseInt($('.baseUrl').outerWidth() + 10)
+        });
+        $('input[name=translate_canonical]').on('keyup', function () {
+            let inputValue = $(this).val()
+
+            // Chuẩn hóa dữ liệu bằng cách loại bỏ dấu tiếng Việt
+            let value = HT.removeUtf8(inputValue);
+
+            $('.canonical').html(BASE_URL + value + SUFFIX);
+        });
         $('textarea[name=meta_description]').on('keyup', function () {
             // Lấy giá trị từ input
             let inputValue = $(this).val();

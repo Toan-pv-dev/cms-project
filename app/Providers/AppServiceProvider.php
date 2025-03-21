@@ -32,6 +32,11 @@ use App\Repositories\UserRepository;
 use App\Services\UserService;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
+use App\Services\Interfaces\PermissionServiceInterface;
+use App\Repositories\PermissionRepository;
+use App\Services\PermissionService;
+use App\Repositories\Interfaces\PermissionRepositoryInterface;
+
 
 use App\Services\Interfaces\RouterServiceInterface;
 use App\Repositories\RouterRepository;
@@ -73,6 +78,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(PostServiceInterface::class, PostService::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
+
+        $this->app->bind(PermissionServiceInterface::class, PermissionService::class);
+        $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
 
         $this->app->bind(RouterRepositoryInterface::class, RouterRepository::class);
     }

@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use App\Services\Interfaces\LanguageServiceInterface;
-use App\Repositories\Interfaces\LanguageRepositoryInterface as LanguageRepository;
+use App\Services\Interfaces\PermissionServiceInterface;
+use App\Repositories\Interfaces\PermissionRepositoryInterface as PermissionRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -13,18 +13,18 @@ use Illuminate\Support\Facades\Log;
  * Class UserService
  * @package App\Services
  */
-class LanguageService  implements LanguageServiceInterface
+class PermissionService  implements PermissionServiceInterface
 {
-    protected $languageRepository;
+    protected $permissionRepository;
     protected $userRepository;
-    public function __construct(LanguageRepository $languageRepository, UserRepository $userRepository)
+    public function __construct(PermissionRepository $permissionRepository, UserRepository $userRepository)
     {
-        $this->languageRepository = $languageRepository;
+        $this->permissionRepository = $permissionRepository;
         $this->userRepository = $userRepository;
     }
     public function select()
     {
-        return ['id', 'name', 'canonical', 'publish', 'image'];
+        return ['id', 'name', 'canonical'];
     }
     public function paginate($request)
     {
@@ -34,24 +34,25 @@ class LanguageService  implements LanguageServiceInterface
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
         $perpage = $request->integer('perpage');
-        $languages = $this->languageRepository->pagination($select, $condition, $perpage, ['path' => 'language/index'], [], [], []);
-        // dd($languages);
-        return $languages;
+        $permissions = $this->permissionRepository->pagination($select, $condition, $perpage, ['path' => 'permission/index'], [], [], []);
+        return $permissions;
     }
 
     public function create($request)
     {
         DB::beginTransaction();
         try {
+            // dd($request->all());
             $payload = $request->except(['_token', 'send']);
             $payload['user_id'] = Auth::id();
-            $language = $this->languageRepository->create($payload);
+            $permission = $this->permissionRepository->create($payload);
             DB::commit();
-            return $language;
+
+            return $permission; // Return the created model
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error during language creation: ' . $e->getMessage());
-            throw new \Exception('Error creating the language: ' . $e->getMessage()); // Rethrow with a custom message
+            Log::error('Error during permission creation: ' . $e->getMessage());
+            throw new \Exception('Error creating the permission: ' . $e->getMessage()); // Rethrow with a custom message
         }
     }
 
@@ -61,12 +62,12 @@ class LanguageService  implements LanguageServiceInterface
         DB::beginTransaction();
         try {
 
-            $user = $this->languageRepository->findById($id);
+            $user = $this->permissionRepository->findById($id);
             $payload = $request->except(['_token', 'send']);
-            $language = $this->languageRepository->update($id, $payload);
+            $permission = $this->permissionRepository->update($id, $payload);
 
             DB::commit();
-            return $language;
+            return $permission;
         } catch (\Exception $e) {
             DB::rollBack();
             echo $e->getMessage();
@@ -77,7 +78,7 @@ class LanguageService  implements LanguageServiceInterface
     {
         DB::beginTransaction();
         try {
-            $user = $this->languageRepository->delete($id);
+            $user = $this->permissionRepository->delete($id);
 
             DB::commit();
             return $user;
@@ -94,7 +95,7 @@ class LanguageService  implements LanguageServiceInterface
         try {
             // dd($post);
             $payload[$post['field']] = (($post['value'] == '1') ? '0' : '1');
-            $this->languageRepository->update($post['modelId'], $payload);
+            $this->permissionRepository->update($post['modelId'], $payload);
             // dd($post);
             $this->changeUserStatus($post, $payload[$post['field']]);
             DB::commit();
@@ -111,7 +112,7 @@ class LanguageService  implements LanguageServiceInterface
         DB::beginTransaction();
         try {
             $payload[$post['field']] = $post['value'];
-            $flag = $this->languageRepository->updateByWhereIn('id', $post['id'], $payload);
+            $flag = $this->permissionRepository->updateByWhereIn('id', $post['id'], $payload);
             $this->changeUserStatus($post, $payload[$post['field']]);
             DB::commit();
             return true; // Phải trả về true nếu cập nhật thành công
@@ -150,12 +151,12 @@ class LanguageService  implements LanguageServiceInterface
         // dd($post);
         DB::beginTransaction();
         try {
-            $language = $this->languageRepository->update($id, ['current' => 1]);
+            $permission = $this->permissionRepository->update($id, ['current' => 1]);
             $payload = ['current' => 0];
             $where = [
                 ['id', '!=', $id]
             ];
-            $this->languageRepository->updateByWhere($where, $payload);
+            $this->permissionRepository->updateByWhere($where, $payload);
             DB::commit();
             return true; // Phải trả về true nếu cập nhật thành công
         } catch (\Exception $e) {
@@ -164,50 +165,5 @@ class LanguageService  implements LanguageServiceInterface
             // die();
             return false; // Trả về false nếu có lỗi
         }
-    }
-    public function saveTranslate($option, $request)
-    {
-        // dd($option['model']);
-
-        DB::beginTransaction();
-        try {
-            $payload = [
-                'name' => $request->input('translate_name'),
-                'description' => $request->input('translate_description'),
-                'content' => $request->input('translate_content'),
-                'meta_title' => $request->input('translate_meta_title'),
-                'meta_keyword' => $request->input('translate_meta_keyword'),
-                'meta_description' => $request->input('translate_meta_description'),
-                'canonical' => $request->input('translate_canonical'),
-                // 'post_catalogue_id' => $option['id'],
-                'language_id' => $option['LanguageId']
-            ];
-
-            $repositoryNameSpace = 'App\Repositories\\' . ucfirst($option['model']) . 'Repository';
-            if (class_exists($repositoryNameSpace)) {
-                $repositoryInstance = app($repositoryNameSpace);
-            }
-            // dd($repositoryInstance);
-
-            $model = $repositoryInstance->findById($option['id']);
-            // dd($model);
-            $model->languages()->detach([$option['LanguageId'], $model->id]);
-
-            $repositoryInstance->createTranslatePivot($model, $payload, 'languages', $option['LanguageId']);
-
-
-            DB::commit();
-            return true; // Phải trả về true nếu cập nhật thành công
-        } catch (\Exception $e) {
-            DB::rollBack();
-            echo $e->getMessage();
-            // die();
-            return false; // Trả về false nếu có lỗi
-        }
-    }
-    public function modelIdConvert($model)
-    {
-        $temp = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $model));
-        return $temp . '_id';
     }
 }

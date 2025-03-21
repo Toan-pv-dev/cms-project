@@ -21,16 +21,10 @@ class DashboardController extends Controller
     }
     public function changeStatus(Request $request)
     {
-        // dd($request);
 
         $post = $request->input();
-        // dd($post['model']);
         $serviceName = ucfirst($post['model']) . 'Service';
-        // dd($serviceName);
         $serviceInterfaceNamespace = '\App\Services\\' . $serviceName;
-        // dd($serviceInterfaceNamespace);
-        // dd($serviceInterfaceNamespace);
-        // dd($serviceInterfaceNamespace);
         if (class_exists($serviceInterfaceNamespace)) {
             $serviceInstance = app($serviceInterfaceNamespace);
         }

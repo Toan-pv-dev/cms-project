@@ -10,10 +10,13 @@ use App\Http\Requests\DeletePostCatalogueRequest;
 use Illuminate\Http\Request;
 use App\Repositories\PostCatalogueRepository as postCatalogueRepository;
 use App\Classes\Nestedsetbie;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 
 class PostCatalogueController extends Controller
 {
+    use AuthorizesRequests;
     protected $postCatalogueService;
     protected $postCatalogueRepository;
     protected $nestedset;
@@ -42,16 +45,15 @@ class PostCatalogueController extends Controller
     public function index(Request $request)
     {
 
+        // dd(session()->all());
 
 
+        // $this->authorize('modules', 'post.catalouge.all');
         // dd(config('apps.usercatalogue'));
         $config = [
             'js' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-
-
-
             ],
             'css' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
@@ -83,6 +85,7 @@ class PostCatalogueController extends Controller
     public function create()
     {
         // dd($location);
+        // $this->authorize('modules', 'post.catalogue.create');
         $config = $this->configData();
         $config['seo'] = config('apps.postcatalogue');
         $config['method'] = 'create';
@@ -109,6 +112,7 @@ class PostCatalogueController extends Controller
     }
     public function edit($id)
     {
+        // $this->authorize('modules', 'post.catalogue.update');
         $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
         // dd($postCatalogue);
 
@@ -116,6 +120,7 @@ class PostCatalogueController extends Controller
         $config['seo'] = config('apps.postcatalogue');
         $config['method'] = 'update';
         $dropdown = $this->getDropdown();
+
         $album = json_decode($postCatalogue->album);
         $template = 'backend.post.catalogue.store';
         return view('backend.dashboard.layout', compact(
@@ -138,6 +143,8 @@ class PostCatalogueController extends Controller
     }
     public function delete($id)
     {
+        // $this->authorize('modules', 'post.catalogue.delete');
+
         $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
 
         $config['seo'] = config('apps.postcatalogue');

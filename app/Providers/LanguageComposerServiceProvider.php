@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\View as ViewFace;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\LanguageRepository as LanguageRepository;
 use Illuminate\View\View;
+use App\Services\Interfaces\LanguageServiceInterface as languageService;
+use Illuminate\Http\Request;
+
 
 class LanguageComposerServiceProvider extends ServiceProvider
 {
@@ -13,12 +16,11 @@ class LanguageComposerServiceProvider extends ServiceProvider
      * Register services.
      */
     protected $languageRepository;
-
+    protected $languageService;
 
     public function __construct($app)
     {
         // parent::__construct($app);
-        $this->languageRepository = $app->make(LanguageRepository::class);
     }
     public function register(): void
     {
@@ -28,12 +30,12 @@ class LanguageComposerServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+    public function boot(Request $request): void
     {
-        // Use View::share for global variables or View::composer for specific views
-        ViewFace::composer('backend.dashboard.components.navbar', function (View $view) {
-            $language = $this->languageRepository->all(); // Example language value
-            $view->with('language', $language); // Pass the variable to the view
+        ViewFace::composer('backend.dashboard.layout', function (View $view) use ($request) {
+            $languageService = app(languageService::class); // Lấy service từ container
+            $languages = $languageService->paginate($request); // Lấy dữ liệu phân trang
+            $view->with('languages', $languages);
         });
     }
 }

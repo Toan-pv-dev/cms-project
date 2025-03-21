@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered language-table">
     <thead>
         <tr>
             <th>
@@ -6,7 +6,18 @@
             </th>
             <th>Ảnh</th>
             <th>Tên nhóm</th>
-            {{-- <th>Canonical</th> --}}
+            @foreach ($languages as $language)
+                @if (session('locale') == $language->canonical)
+                    @continue
+                @endif
+                <th style="width: 120px; height: 50px; text-align: center; vertical-align: middle;">
+                    <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                        <img src="{{ $language->image }}" alt=""
+                            style="max-width: 60%; max-height: 50%; object-fit: cover;">
+                    </div>
+                </th>
+            @endforeach
+
             <th>Tình trạng</th>
             <th>Action</th>
         </tr>
@@ -19,16 +30,24 @@
                         <input type="checkbox" value="{{ $postCatalogue->id }}" class="input-checkbox checkBoxItem">
                     </td>
                     <td style="width: 100px; height: 60px; text-align: center;">
-                        <span><img style=" width: 100%;height: 100%;object-fit: cover; border-radius: 5px; "
+                        <span><img style=" width: 100%;height: 100%;object-fit: cover; "
                                 src="{{ $postCatalogue->image }}" alt=""></span>
                     </td>
 
                     <td>
                         {{ str_repeat('|____', $postCatalogue->level > 0 ? $postCatalogue->level - 1 : 0) . $postCatalogue->name }}
                     </td>
-                    {{-- <td>
-                        {{ $postCatalogue->image }}
-                    </td> --}}
+                    @foreach ($languages as $language)
+                        @if (session('locale') == $language->canonical)
+                            @continue
+                        @endif
+                        <td class="text-center">
+                            <a
+                                href="{{ route('language.translate', ['id' => $postCatalogue->id, 'languageId' => $language->id, 'model' => 'PostCatalogue']) }}">Chua
+                                dich</a>
+                        </td>
+                    @endforeach
+
                     <td class="text-center js-switch-{{ $postCatalogue->id }}">
 
 
