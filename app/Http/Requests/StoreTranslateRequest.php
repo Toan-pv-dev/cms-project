@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+// use Illuminate\Container\Attributes\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTranslateRequest extends FormRequest
@@ -21,9 +23,27 @@ class StoreTranslateRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        // dd($this->input('option'));
         return [
             'translate_name' => 'required|string',
-            'translate_canonical' => 'required|string|unique:routers,canonical, ' . $this->id . ',module_id',
+            'translate_canonical' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $option = $this->input('option');
+                    // dd($option);
+                    $exist = DB::table('routers')
+                        ->where('canonical', $value)
+                        ->where('language_id', '<>', $option['LanguageId'])
+                        ->where('id', '<>', $option['id'])
+                        ->exists();
+
+                    // dd($exist);
+                    if ($exist) {
+                        $fail('Đường dẫn đã tồn tại, Hãy chọn đường dẫn khác');
+                    }
+                },
+            ]
 
 
         ];

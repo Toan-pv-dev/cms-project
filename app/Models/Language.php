@@ -26,4 +26,20 @@ class Language extends Model
     {
         return $this->belongsToMany(PostCatalogue::class, 'post_catalogue_language', 'language_id', 'post_catalogue_id')->withPivot('name', 'canonical', 'meta_title', 'meta_keyword', 'meta_description', 'description', 'content')->withTimestamps();
     }
+    public function productCatalogue()
+    {
+        return $this->belongsToMany(ProductCatalogue::class, 'product_catalogue_language', 'language_id', 'product_catalogue_id')->withPivot('name', 'canonical', 'meta_title', 'meta_keyword', 'meta_description', 'description', 'content')->withTimestamps();
+    }
+    public function galleryCatalogue()
+    {
+        return $this->belongsToMany(GalleryCatalogue::class, 'gallery_catalogue_language', 'language_id', 'gallery_catalogue_id')->withPivot('name', 'canonical', 'meta_title', 'meta_keyword', 'meta_description', 'description', 'content')->withTimestamps();
+    }
+    public function AttributeCatalogue()
+    {
+        return $this->belongsToMany(AttributeCatalogue::class, 'attribute_catalogue_language', 'language_id', 'attribute_catalogue_id')->withPivot('name', 'canonical', 'meta_title', 'meta_keyword', 'meta_description', 'description', 'content')->withTimestamps();
+    }
+    public function attribute()
+    {
+        return $this->belongsToMany(Attribute::class, 'attribute_language', 'language_id', 'attribute_id')->withPivot('name', 'canonical', 'meta_title', 'meta_keyword', 'meta_description', 'description', 'content')->withTimestamps();
+    }
 }

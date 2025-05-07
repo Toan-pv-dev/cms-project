@@ -20,8 +20,10 @@ trait QueryScope
     public function scopePublish($query, $keyword)
     {
         if (isset($keyword) && $keyword !== null) {
-            if ($keyword != -1)
-                $query->where('posts.publish', '=', $keyword);
+            if ($keyword != -1) {
+                $table = $query->getModel()->getTable();
+                $query->where("{$table}.publish", '=', $keyword);
+            }
         }
     }
     public function scopeCustomeWhere($query, $where = [])

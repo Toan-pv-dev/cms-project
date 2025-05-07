@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use App\Services\Interfaces\LanguageServiceInterface;
 use App\Repositories\Interfaces\LanguageRepositoryInterface as LanguageRepository;
+use App\Repositories\Interfaces\RouterRepositoryInterface as RouterRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -17,14 +18,16 @@ class LanguageService  implements LanguageServiceInterface
 {
     protected $languageRepository;
     protected $userRepository;
-    public function __construct(LanguageRepository $languageRepository, UserRepository $userRepository)
+    protected $routerRepository;
+    public function __construct(LanguageRepository $languageRepository, UserRepository $userRepository, RouterRepository $routerRepository)
     {
         $this->languageRepository = $languageRepository;
         $this->userRepository = $userRepository;
+        $this->routerRepository = $routerRepository;
     }
     public function select()
     {
-        return ['id', 'name', 'canonical', 'publish', 'image'];
+        return ['id', 'name', 'canonical', 'publish', 'image', 'current'];
     }
     public function paginate($request)
     {
@@ -182,18 +185,37 @@ class LanguageService  implements LanguageServiceInterface
                 // 'post_catalogue_id' => $option['id'],
                 'language_id' => $option['LanguageId']
             ];
-
             $repositoryNameSpace = 'App\Repositories\\' . ucfirst($option['model']) . 'Repository';
+            // dd($repositoryNameSpace);
             if (class_exists($repositoryNameSpace)) {
+
                 $repositoryInstance = app($repositoryNameSpace);
             }
             // dd($repositoryInstance);
-
+            // dd($option['model']);
             $model = $repositoryInstance->findById($option['id']);
             // dd($model);
             $model->languages()->detach([$option['LanguageId'], $model->id]);
 
+
             $repositoryInstance->createTranslatePivot($model, $payload, 'languages', $option['LanguageId']);
+            // dd($option);
+
+            $this->routerRepository->forceDeleteByWhere([
+                ['module_id', '=', $model->id],
+                ['language_id', '=', $option['LanguageId']],
+                ['controllers', '=', 'App\Http\Controller\Frontend\\' . $option['model'] . 'Controller'],
+
+            ]);
+
+
+            $routerPayload = [
+                'canonical' => is_array($request) ? ($request['translate_canonical'] ?? null) : $request->input('translate_canonical'),
+                'module_id' => $model->id,
+                'language_id' => $option['LanguageId'],
+                'controllers' => 'App\Http\Controller\Frontend\\' . $option['model'] . 'Controller',
+            ];
+            $this->routerRepository->create($routerPayload);
 
 
             DB::commit();

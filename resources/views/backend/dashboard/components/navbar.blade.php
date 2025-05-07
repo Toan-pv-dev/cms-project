@@ -11,9 +11,7 @@
                 </div>
             </form>
         </div>
-        {{-- @php
-            dd($language);
-        @endphp --}}
+
         <ul class="nav navbar-top-links navbar-right">
             <li>
                 <div class="uk-flex uk-flex-middle">

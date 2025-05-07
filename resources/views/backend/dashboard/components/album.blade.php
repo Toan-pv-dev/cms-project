@@ -7,6 +7,7 @@
             </div>
         </div>
     </div>
+    {{-- @dd(1); --}}
     <div class="ibox-content">
         <div class="row">
             <div class="col-lg-12">

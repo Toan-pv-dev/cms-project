@@ -31,7 +31,7 @@ class PostCatalogueController extends Controller
             [
                 'table' => 'post_catalogues',
                 'foreignkey' => 'post_catalogue_id',
-                'language_id' => 1,
+                'language_id' => $this->currentLanguage(),
             ]
         );
         $this->language = $this->currentLanguage();
@@ -45,11 +45,6 @@ class PostCatalogueController extends Controller
     public function index(Request $request)
     {
 
-        // dd(session()->all());
-
-
-        // $this->authorize('modules', 'post.catalouge.all');
-        // dd(config('apps.usercatalogue'));
         $config = [
             'js' => [
                 'https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js',
@@ -62,8 +57,6 @@ class PostCatalogueController extends Controller
             ],
             'model' => 'PostCatalogue'
         ];
-        // echo 1;
-        // die();
         $config['seo'] = config('apps.postcatalogue');
         // dd($config['seo']);
         // echo 1;
@@ -72,7 +65,7 @@ class PostCatalogueController extends Controller
         // dd($users);
 
         $template = 'backend.post.catalogue.index';
-
+        // dd($postCatalogues);
         return view('backend.dashboard.layout', compact(
             'template',
             'config',

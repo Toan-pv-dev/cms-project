@@ -10,6 +10,7 @@ use App\Http\Requests\StoreTranslateRequest;
 use Illuminate\Http\Request;
 use App\Repositories\LanguageRepository as languageRepository;
 use Illuminate\Support\Facades\App;
+use App\Models\PostCatalogue;
 
 class LanguageController extends Controller
 {
@@ -150,7 +151,6 @@ class LanguageController extends Controller
     {
         // dd($currentLang);
         $locale = $this->languageRepository->findById($id);
-
         // dd($locale->canonical);
         if ($this->languageService->switch($id)) {
 
@@ -161,17 +161,29 @@ class LanguageController extends Controller
 
         return redirect()->back();
     }
+    private function extractModelName($model)
+    {
+        $model = str_replace('App\Models\\', '', $model);
+        return strtolower($model);
+    }
+
     public function translate($id, int $languageId, $model)
     {
+
         $repositoryInstance = $this->repoInstance($model);
+        // dd($repositoryInstance);
         $languageInstance = $this->repoInstance('language');
+        // dd($repositoryInstance, $languageInstance);
         $currentLanguage = $languageInstance->findByCondition([
             ['canonical', '=', App::getLocale()]
         ]);
-
+        // dd($currentLanguage);
         $methodName = 'get' . $model . 'ById';
+        // dd($methodName);
+        // dd($id, $languageId, $model, $currentLanguage->id);
         $modelInstance = $repositoryInstance->{$methodName}($id, $currentLanguage->id);
-        $modelTranslate = $repositoryInstance->getPostCatalogueById($id, $languageId);
+        // dd($modelInstance);
+        $modelTranslate = $repositoryInstance->$methodName($id, $languageId);
         // dd($modelTranslate);
         $config = [
             'js' => [
@@ -212,17 +224,38 @@ class LanguageController extends Controller
         }
         return $repositoryInstance;
     }
+    private function convertModuleNameToTable($name)
+    {
+        $temp = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $name));
+        return  $temp;
+    }
     public function storeTranslate(StoreTranslateRequest $request)
     {
 
         // dd($request->all());
-        $option = ($request->input('option'));
 
-        if ($this->languageService->saveTranslate($option, $request)) {
-            flash()->success('Thêm mới bản ghi thành công');
-            return redirect()->back();
+        // dd($request->input('option'));
+        $option = ($request->input('option'));
+        $module_name = $this->convertModuleNameToTable($option['model']);
+        $moduleName = explode('_', $module_name);
+        $firstName = $moduleName[0];
+
+        if (count($moduleName) > 1) {
+            $name = $firstName .  '.catalogue';
+        } else {
+            $name = $firstName;
         }
+        // dd($name);
+        // dd($firstName);
+        // $lastName = $moduleName[1];
+        if ($this->languageService->saveTranslate($option, $request)) {
+            // echo 1;
+            // die();
+            flash()->success('Thêm mới bản ghi thành công');
+            return redirect()->route($name . '.index');
+        }
+
         flash()->error('Thêm mới bản ghi không thành công');
-        return redirect()->back();
+        return redirect()->route($name . '.index');
     }
 }

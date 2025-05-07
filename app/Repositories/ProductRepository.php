@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\Product;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\BaseRepository;
+
+/**
+ * Class UserService
+ *  App\Services
+ */
+class ProductRepository extends BaseRepository implements ProductRepositoryInterface
+{
+    protected $model;
+    public function __construct(
+        Product $model
+    ) {
+        // dd($model);
+        $this->model = $model;
+    }
+    public function pagination(
+        $column = ['*'],
+        $condition = [],
+        int $perPage = 0,
+        array $extend = [],
+        $orderBy = [],
+        array $join = [],
+        array $relations = [],
+        array $rawQuery = [],
+    ) {
+        $query = $this->model->select($column);
+        $query = $query->keyword($condition['keyword'] ?? NULL)
+            ->publish($condition['publish'] ?? NULL)
+            ->CustomeWhereRaw($rawQuery ?? null)
+            ->relationCount($relations ?? null)
+            ->customeWhere($condition['where'] ?? null)
+            ->customeJoin($join ?? null)
+            ->customeGroupBy($extend['groupBy'] ?? null)
+            ->customeOrderBy($orderBy ?? null)
+            ->paginate($perPage)
+            ->withQueryString()
+            ->withPath(env('APP_URL') . $extend['path']);
+        // dd($query);
+        return $query;
+    }
+    public function getProductById(int $id = 0, $language_id = 0)
+
+    {
+        return $this->model
+            ->select([
+                'products.id',
+                'products.product_catalogue_id',
+                'products.image',
+                'products.icon',
+                'products.album',
+                'products.follow',
+                'products.publish',
+                'tb2.name',
+                'tb2.description',
+                'tb2.content',
+                'tb2.meta_title',
+                'tb2.meta_keyword',
+                'tb2.meta_description',
+                'tb2.canonical',
+
+            ])
+            ->join('product_language as tb2', 'tb2.product_id', '=', 'products.id')
+            ->with('product_catalogues')
+            ->where('tb2.language_id', '=', $language_id)
+            ->findOrFail($id);
+    }
+}

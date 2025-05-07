@@ -8,12 +8,19 @@ use App\Http\Controllers\Ajax\DashboardController as AjaxDashboard;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\backend\UserCatalogueController;
 use App\Http\Controllers\Ajax\LocationController;
+use App\Http\Controllers\Ajax\AttributeController as AjaxAttribute;
 use App\Http\Controllers\Backend\LanguageController;
 use App\Http\Controllers\backend\PostCatalogueController;
 use App\Http\Controllers\backend\PostController;
 use App\Http\Controllers\Backend\PermissionController;
+use App\Http\Controllers\Backend\GenerateController;
 // use CKSource\CKFinder\Acl\Permission;
+use App\Http\Controllers\Backend\ProductCatalogueController;
 
+use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\AttributeCatalogueController;
+use App\Http\Controllers\Backend\AttributeController;
+//@@use-module@@
 
 // use App\Http\Middleware\LoginMiddleware;
 
@@ -65,9 +72,19 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::post('storeTranslate', [LanguageController::class, 'storeTranslate'])->name('language.storeTranslate');
     });
 
+    //generate
+    Route::group(['prefix' => 'generate'], function () {
+        Route::post('store', [GenerateController::class, 'store'])->name('generate.store');
+        Route::get('index', [GenerateController::class, 'index'])->name('generate.index');
+        Route::get('create', [GenerateController::class, 'create'])->name('generate.create');
+        Route::get('edit/{id}', [GenerateController::class, 'edit'])->name('generate.edit');
+        Route::post('update/{id}', [GenerateController::class, 'update'])->name('generate.update');
+        Route::get('delete/{id}', [GenerateController::class, 'delete'])->name('generate.delete');
+        Route::post('destroy/{id}', [GenerateController::class, 'destroy'])->name('generate.destroy');
+    });
+
     //post_catalogue
     Route::group(['prefix' => 'post/catalogue'], function () {
-
         Route::post('store', [PostCatalogueController::class, 'store'])->name('post.catalogue.store');
         Route::get('index', [PostCatalogueController::class, 'index'])->name('post.catalogue.index');
         Route::get('create', [PostCatalogueController::class, 'create'])->name('post.catalogue.create');
@@ -100,6 +117,72 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::post('destroy/{id}', [PermissionController::class, 'destroy'])->name('permission.destroy');
     });
 
+
+
+    // ProductCatalogue routes
+    Route::group(['prefix' => 'product/catalogue'], function () {
+        Route::post('store', [ProductCatalogueController::class, 'store'])->name('product.catalogue.store');
+        Route::get('index', [ProductCatalogueController::class, 'index'])->name('product.catalogue.index');
+        Route::get('create', [ProductCatalogueController::class, 'create'])->name('product.catalogue.create');
+        Route::get('edit/{id}', [ProductCatalogueController::class, 'edit'])->name('product.catalogue.edit');
+        Route::post('update/{id}', [ProductCatalogueController::class, 'update'])->name('product.catalogue.update');
+        Route::get('delete/{id}', [ProductCatalogueController::class, 'delete'])->name('product.catalogue.delete');
+        Route::post('destroy/{id}', [ProductCatalogueController::class, 'destroy'])->name('product.catalogue.destroy');
+    });
+
+
+    // GalleryCatalogue routes
+
+
+    // ProductCatalogue routes
+
+
+    // Product routes
+
+    // Product routes
+    Route::group(['prefix' => 'product'], function () {
+        Route::post('store', [ProductController::class, 'store'])->name('product.store');
+        Route::get('index', [ProductController::class, 'index'])->name('product.index');
+        Route::get('create', [ProductController::class, 'create'])->name('product.create');
+        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+        Route::post('update/{id}', [ProductController::class, 'update'])->name('product.update');
+        Route::get('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+        Route::post('destroy/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    });
+
+    // AttributeCatalogue routes
+    Route::group(['prefix' => 'attribute/catalogue'], function () {
+        Route::post('store', [AttributeCatalogueController::class, 'store'])->name('attribute.catalogue.store');
+        Route::get('index', [AttributeCatalogueController::class, 'index'])->name('attribute.catalogue.index');
+        Route::get('create', [AttributeCatalogueController::class, 'create'])->name('attribute.catalogue.create');
+        Route::get('edit/{id}', [AttributeCatalogueController::class, 'edit'])->name('attribute.catalogue.edit');
+        Route::post('update/{id}', [AttributeCatalogueController::class, 'update'])->name('attribute.catalogue.update');
+        Route::get('delete/{id}', [AttributeCatalogueController::class, 'delete'])->name('attribute.catalogue.delete');
+        Route::post('destroy/{id}', [AttributeCatalogueController::class, 'destroy'])->name('attribute.catalogue.destroy');
+    });
+
+    // Attribute routes
+    Route::group(['prefix' => 'attribute'], function () {
+        Route::post('store', [AttributeController::class, 'store'])->name('attribute.store');
+        Route::get('index', [AttributeController::class, 'index'])->name('attribute.index');
+        Route::get('create', [AttributeController::class, 'create'])->name('attribute.create');
+        Route::get('edit/{id}', [AttributeController::class, 'edit'])->name('attribute.edit');
+        Route::post('update/{id}', [AttributeController::class, 'update'])->name('attribute.update');
+        Route::get('delete/{id}', [AttributeController::class, 'delete'])->name('attribute.delete');
+        Route::post('destroy/{id}', [AttributeController::class, 'destroy'])->name('attribute.destroy');
+    });
+    //@@new-module@@
+
+
+
+
+
+
+
+
+
+
+
     Route::get('dashboard/index', [DashboardController::class, 'index'])->where(['id' => '[0-9]+'])->name('dashboard.index');
 });
 
@@ -109,6 +192,8 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
 Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location');
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboard::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 Route::post('ajax/dashboard/changeStatusAll', [AjaxDashboard::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll');
+Route::get('ajax/attribute/getAttribute', [AjaxAttribute::class, 'getAttribute'])->name('ajax.attribute.getAttribute');
+
 
 // AuthAuth
 Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');

@@ -5,16 +5,16 @@
     <div class="ibox-content">
         <div class="seo-container">
             <div class="meta-title">
-                {{ old('meta_title', $post->meta_title ?? 'Bạn chưa có tiêu đề SEO') }}
+                {{ old('meta_title', $galleryCatalogue->meta_title ?? 'Bạn chưa có tiêu đề SEO') }}
             </div>
             <div class="canonical">
-                {{ old('canonical', $post->canonical ?? '')
-                    ? config('app.url') . old('canonical', $post->canonical ?? '') . config('apps.general.suffix')
+                {{ old('canonical', $galleryCatalogue->canonical ?? '')
+                    ? config('app.url') . old('canonical', $galleryCatalogue->canonical ?? '') . config('apps.general.suffix')
                     : 'http://duong-dan-cua-bai.html' }}
 
             </div>
             <div class="meta_description">
-                {{ old('meta_description', $post->meta_description ?? 'Bạn chưa nhập description') }}
+                {{ old('meta_description', $galleryCatalogue->meta_description ?? 'Bạn chưa nhập description') }}
             </div>
         </div>
         <div class="seo-wrapper">
@@ -29,7 +29,7 @@
                                 </div>
                             </label>
                             <input type="text" name="meta_title"
-                                value="{{ old('meta_title', $post->meta_title ?? '') }}" class="form-control"
+                                value="{{ old('meta_title', $galleryCatalogue->meta_title ?? '') }}" class="form-control"
                                 placeholder="" autocomplete="off">
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                                 <span>Từ khóa SEO</span>
                             </label>
                             <input type="text" name="meta_keyword"
-                                value="{{ old('meta_keyword', $post->meta_keyword ?? '') }}" class="form-control"
+                                value="{{ old('meta_keyword', $galleryCatalogue->meta_keyword ?? '') }}" class="form-control"
                                 placeholder="" autocomplete="off">
                         </div>
                     </div>
@@ -59,8 +59,8 @@
                                     <span class="count_meta-title">0 ký tự </span>
                                 </div>
                             </label>
-                            <textarea type="text" name="meta_description" class="form-control meta_description-post-catalouge"
-                                autocomplete="off">{{ trim(old('meta_description', $post->meta_description ?? '')) }}</textarea>
+                            {{-- {{ $galleryCatalogue->meta_description }} --}}
+                            <textarea type="text" name="meta_description" class="form-control meta_description-post-catalouge">{{ old('meta_description', $galleryCatalogue->meta_description ?? '') }}</textarea>
 
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             </label>
                             <div class="input-container">
                                 <input type="text" name="canonical"
-                                    value="{{ old('meta_description', $post->canonical ?? '') }}" class="form-control "
+                                    value="{{ old('canonical', $galleryCatalogue->canonical ?? '') }}" class="form-control "
                                     placeholder="" autocomplete="off">
                                 <span class="baseUrl">{{ config('app.url') }}</span>
                             </div>

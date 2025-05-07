@@ -73,7 +73,7 @@ class PostService  extends BaseService implements PostServiceInterface
             if ($post->id > 0) {
                 $this->updateLanguageForPost($post, $request);
                 $this->updateCatalogueForPost($post, $request);
-                $this->createRouter($post, $request, $this->controllerName);
+                $this->createRouter($post, $request, $this->controllerName, $this->currentLanguage());
             }
             DB::commit();
             return $post;
@@ -98,7 +98,7 @@ class PostService  extends BaseService implements PostServiceInterface
 
                 $this->updateLanguageForPost($post, $request);
                 $this->updateCatalogueForPost($post, $request);
-                $this->updateRouter($post, $request, $this->controllerName);
+                $this->updateRouter($post, $request, $this->controllerName, $this->currentLanguage());
             }
             DB::commit();
 
@@ -114,6 +114,10 @@ class PostService  extends BaseService implements PostServiceInterface
         DB::beginTransaction();
         try {
             $user = $this->postRepository->delete($id);
+            $this->routerRepository->forceDeleteByWhere([
+                ['module_id', '=', $id],
+                ['controllers', '=', 'App\Http\Controller\Frontend\\' . $this->controllerName],
+            ]);
 
             DB::commit();
             return $user;

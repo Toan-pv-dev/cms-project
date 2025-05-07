@@ -4,7 +4,10 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use App\Services\Interfaces\BaseServiceInterface;
+use App\Services\Interfaces\LanguageServiceInterface as LanguageService;
 use App\Repositories\Interfaces\BaseRepositoryInterface as BaseRepository;
+// use App\Repositories\LanguageRepository as LanguageRepository;
+use App\Models\Language;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\RouterRepository as RouterRepository;
@@ -21,18 +24,23 @@ class BaseService  implements BaseServiceInterface
 {
     protected $nestedSet;
     protected $routerRepository;
-    public function __construct(RouterRepository $routerRepository)
+    protected $languageRepository;
+    public function __construct(RouterRepository $routerRepository, LanguageRepository $languageRepository)
     {
+        $this->languageRepository = $languageRepository;
         $this->routerRepository = $routerRepository;
     }
     public function currentLanguage()
     {
-        return 1;
+        $locale = app()->getLocale();
+        $language = Language::where('canonical', $locale)->first();
+        return $language->id ?? 1;
     }
 
     public function formatAlbum($album = null)
     {
         // dd($payload);
+        // dd($album);
         return !empty($album) ? json_encode($album) : '';
     }
 
@@ -43,29 +51,31 @@ class BaseService  implements BaseServiceInterface
         $this->nestedSet->Action();
     }
 
-    public function formatRouterPayload($model, $request, $controllerName)
+    public function formatRouterPayload($model, $request, $controllerName, $languageId)
     {
         $routerPayload = [
             'canonical' => is_array($request) ? ($request['canonical'] ?? null) : $request->input('canonical'),
             'module_id' => $model->id,
+            'language_id' => $languageId,
             'controllers' => 'App\Http\Controller\Frontend\\' . $controllerName,
         ];
-        // dd($routerPayload);
         return $routerPayload;
     }
-    public function createRouter($model, $request, $controllerName)
+    public function createRouter($model, $request, $controllerName, $languageId)
     {
-        $router = $this->formatRouterPayload($model, $request, $controllerName);
+        // dd($model, $request, $controllerName, $languageId);
+        $router = $this->formatRouterPayload($model, $request, $controllerName, $languageId);
         $this->routerRepository->create($router);
     }
 
-    public function updateRouter($model, $request, $controllerName)
+    public function updateRouter($model, $request, $controllerName, $languageId)
     {
-        $payload = $this->formatRouterPayload($model, $request, $controllerName);
+        $payload = $this->formatRouterPayload($model, $request, $controllerName, $languageId);
         // dd($payload);
         $condition  = [
             ['module_id', '=', $model->id],
             ['controllers', '=', 'App\Http\Controller\Frontend\\' . $controllerName],
+
         ];
         $router = $this->routerRepository->findByCondition($condition);
         // die();

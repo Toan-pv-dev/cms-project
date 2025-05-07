@@ -51,8 +51,10 @@ class BaseRepository implements BaseRepositoryInterface
     public function create(array $payload = [])
     {
         // dd($payload, $this->model->getTable());
+        // dd($payload);
 
         $model = $this->model->create($payload);
+
         // dd($model);
         return $model;
     }
@@ -79,6 +81,8 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function delete(int $id = 0)
     {
+
+        // dd($this->model);
         return $this->findById($id)->delete();
     }
 
@@ -100,6 +104,21 @@ class BaseRepository implements BaseRepositoryInterface
 
         return $query->first();
     }
+
+    public function forceDelete(int $id = 0)
+    {
+        return $this->findById($id)->forceDelete();
+    }
+
+    public function forceDeleteByWhere(array $condition = [])
+    {
+        $query = $this->model->newQuery();
+        foreach ($condition as $key => $val) {
+            $query->where($val[0], $val[1], $val[2]);
+        }
+        return $query->forceDelete();
+    }
+
     public function createPivot($model, array $payload = [], string $relation = '')
     {
 

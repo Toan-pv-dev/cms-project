@@ -3,7 +3,7 @@
         <div class="form-row">
             <label for="" class="control-label text-left">Tiêu đề nhóm bài viết</label>
             <span class="text-danger">(*)</span>
-            <input type="text" name="name" value="{{ old('name', $post->name ?? '') }}" class="form-control"
+            <input type="text" name="name" value="{{ old('name', $attributeCatalogue->name ?? '') }}" class="form-control"
                 placeholder="" autocomplete="off">
         </div>
     </div>
@@ -14,7 +14,7 @@
             <label for="" class="control-label text-left">Mô tả ngắn</label>
             <span class="text-danger">(*)</span>
             <textarea type="text" name="description" class="form-control ck-editor" placeholder="" autocomplete="off"
-                id="description" data-height="500">{{ old('description', isset($post->description) ? $post->description : '') }}</textarea>
+                id="description" data-height="500">{{ old('description', isset($attributeCatalogue->description) ? $attributeCatalogue->description : '') }}</textarea>
         </div>
     </div>
 </div>
@@ -28,7 +28,7 @@
             </div>
 
             <textarea type="text" name="content" class="form-control ck-editor" placeholder="" autocomplete="off" id="content"
-                data-height="500">{{ old('content', $post->content ?? '') }}</textarea>
+                data-height="500">{{ old('content', $attributeCatalogue->content ?? '') }}</textarea>
         </div>
 
     </div>

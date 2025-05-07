@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('order')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->tinyInteger('follow')->default(0);
             $table->text('deleted_at')->nullable();
             $table->timestamps();
         });

@@ -41,12 +41,23 @@
                         @if (session('locale') == $language->canonical)
                             @continue
                         @endif
+                        {{-- @dd($languages) --}}
                         <td class="text-center">
-                            <a
-                                href="{{ route('language.translate', ['id' => $postCatalogue->id, 'languageId' => $language->id, 'model' => 'PostCatalogue']) }}">Chua
-                                dich</a>
+                            @php
+                                $hasTranslation = $language->postCatalogue->contains($postCatalogue->id);
+                            @endphp
+                            @if ($hasTranslation)
+                                <a
+                                    href="{{ route('language.translate', ['id' => $postCatalogue->id, 'languageId' => $language->id, 'model' => 'PostCatalogue']) }}">Đã
+                                    dịch</a>
+                            @else
+                                <a
+                                    href="{{ route('language.translate', ['id' => $postCatalogue->id, 'languageId' => $language->id, 'model' => 'PostCatalogue']) }}">Chưa
+                                    dịch</a>
+                            @endif
                         </td>
                     @endforeach
+
 
                     <td class="text-center js-switch-{{ $postCatalogue->id }}">
 

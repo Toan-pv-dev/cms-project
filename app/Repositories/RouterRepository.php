@@ -5,12 +5,13 @@ namespace App\Repositories;
 use App\Models\Router;
 // use App\Models\Province;
 use App\Repositories\BaseRepository;
+use App\Repositories\Interfaces\RouterRepositoryInterface;
 
 /**
  * Interface UserServiceInterface
  * @package App\Services\Interfaces
  */
-class RouterRepository extends BaseRepository
+class RouterRepository extends BaseRepository implements RouterRepositoryInterface
 {
     protected $model;
     public function __construct(

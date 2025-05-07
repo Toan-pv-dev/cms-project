@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\PostCatalogue;
 use App\Repositories\Interfaces\PostCatalogueRepositoryInterface;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class UserService
@@ -27,7 +28,7 @@ class PostCatalogueRepository extends BaseRepository implements PostCatalogueRep
         array $orderBy = [],
         $join = [],
         array $relations = [],
-        array $rawQuery = [],
+        array $rawQuery = [], // đây là mảng chứa các điều kiện where dạng [['column', 'operator', 'value']]
     ) {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
@@ -36,16 +37,19 @@ class PostCatalogueRepository extends BaseRepository implements PostCatalogueRep
             }
             return $query;
         });
+
         if (isset($relations) && !empty($relations)) {
             foreach ($relations as $relation) {
                 $query->withCount($relation);
             }
         }
+
         if (isset($condition['publish']) && $condition['publish'] !== null) {
             if ($condition['publish'] != -1) {
                 $query->where('publish', '=', $condition['publish']);
             }
         }
+
         if (isset($orderBy) && is_array($orderBy) && count($orderBy)) {
             foreach ($orderBy as $field => $direction) {
                 $query->orderBy($field, $direction);
@@ -53,10 +57,21 @@ class PostCatalogueRepository extends BaseRepository implements PostCatalogueRep
         }
 
         if (!empty($join)) {
-            $query->join(...$join);
+            foreach ($join as $joinClause) {
+                $query->join($joinClause[0], $joinClause[1], $joinClause[2], $joinClause[3]);
+            }
         }
+
+
+        if (!empty($rawQuery)) {
+            foreach ($rawQuery as $where) {
+                $query->where($where[0], $where[1], $where[2]);
+            }
+        }
+
         return $query->paginate($perPage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
     }
+
     public function getPostCatalogueById(int $id = 0, $language_id = 0)
     {
         return $this->model
@@ -80,5 +95,16 @@ class PostCatalogueRepository extends BaseRepository implements PostCatalogueRep
             ->join('post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id')
             ->where('tb2.language_id', '=', $language_id)
             ->find($id);
+    }
+    public function hasTranslation($postCatalogueId, $languageId)
+    {
+        return $this->model
+            ->where('id', $postCatalogueId)
+            ->whereHas('languages', function ($query) use ($languageId) {
+                $query->where('language_id', $languageId)
+                    ->whereNotNull('name')
+                    ->where('name', '!=', '');
+            })
+            ->exists();
     }
 }

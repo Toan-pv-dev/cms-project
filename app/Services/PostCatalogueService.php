@@ -6,13 +6,15 @@ use App\Models\PostCatalogue;
 use Illuminate\Support\Facades\DB;
 use App\Services\Interfaces\PostCatalogueServiceInterface;
 use App\Repositories\Interfaces\PostCatalogueRepositoryInterface as PostCatalogueRepository;
+use App\Repositories\Interfaces\LanguageRepositoryInterface as languageRepository;
 use App\Repositories\RouterRepository as RouterRepository;
-use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
 use App\Services\BaseService;
 use Illuminate\Support\Str;
 use App\Classes\Nestedsetbie;
+
 
 
 
@@ -24,12 +26,14 @@ use App\Classes\Nestedsetbie;
 class PostCatalogueService  extends BaseService implements PostCatalogueServiceInterface
 {
     protected $postCatalogueRepository;
+    protected $languageRepository;
     // protected $nestedSet;
     protected $routerRepository;
     protected $controllerName = 'PostCatalogueController';
-    public function __construct(PostCatalogueRepository $postCatalogueRepository, RouterRepository $routerRepository)
+    public function __construct(PostCatalogueRepository $postCatalogueRepository, RouterRepository $routerRepository, languageRepository $languageRepository)
     {
         $this->postCatalogueRepository = $postCatalogueRepository;
+        $this->languageRepository = $languageRepository;
         $this->routerRepository = $routerRepository;
         $this->nestedSet = new Nestedsetbie(
             [
@@ -46,7 +50,9 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
     public function paginate($request)
     {
 
-
+        $locale = App::getLocale();
+        $language = $this->languageRepository->findByCondition([['canonical', '=', $locale]]);
+        $languageId = $language->id;
         $select = $this->select();
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
@@ -55,16 +61,15 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
             $select,
             $condition,
             $perpage,
-            ['path' => 'post.catalogue/index'],
+            ['path' => 'post/catalogue/index'],
+            ['post_catalogues.lft' => 'asc'],
             [
-                'post_catalogues.lft' => 'asc',
+                ['post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id']
             ],
-            ['post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id'],
             [],
-            []
-
-
-
+            [
+                ['tb2.language_id', '=', $languageId]
+            ]
         );
         return $postCatalogues;
     }
@@ -134,7 +139,10 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
         DB::beginTransaction();
         try {
             $user = $this->postCatalogueRepository->delete($id);
-
+            $this->routerRepository->forceDeleteByWhere([
+                ['module_id', '=', $id],
+                ['controllers', '=', 'App\Http\Controller\Frontend\\' . $this->controllerName],
+            ]);
             DB::commit();
             return $user;
         } catch (\Exception $e) {
@@ -215,7 +223,8 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
         $payload = $request->only($this->payload());
         // dd($payload);
         $payload['user_id'] = Auth::id();
-        $payload['album'] = $this->formatAlbum($request);
+        $payload['album'] = $this->formatAlbum($payload['album'] ?? null);
+        // dd($payload['album']);
         // dd($payload['album']);
         // dd($payload);
         $postCatalogue = $this->postCatalogueRepository->create($payload);

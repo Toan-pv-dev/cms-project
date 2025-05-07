@@ -3,6 +3,50 @@
 return [
     'module' => [
         [
+            'title' => 'Quản lý danh muc thuoc tinh',
+            'icon' => '<i class="fa fa-users"></i>',
+            'name' => ['product', 'attribute'],
+            'subModule' => [
+
+                [
+                    'title' => 'Quản lý nhóm thuộc tính',
+                    'route' => 'attribute.catalogue.index'
+                ],
+
+                [
+                    'title' => 'Quản lý  thuộc tính',
+                    'route' => 'attribute.index'
+                ]
+
+            ]
+        ],
+        [
+            'title' => 'Quản lý danh muc san pham',
+            'icon' => '<i class="fa fa-users"></i>',
+            'name' => ['product', 'permission'],
+            'subModule' => [
+
+                [
+                    'title' => 'Quản lý nhóm thành viên',
+                    'route' => 'product.catalogue.index'
+                ]
+
+            ]
+        ],
+        [
+            'title' => 'Quản lý san pham',
+            'icon' => '<i class="fa fa-users"></i>',
+            'name' => ['product', 'permission'],
+            'subModule' => [
+
+                [
+                    'title' => 'Quản lý nhóm thành viên',
+                    'route' => 'product.index'
+                ]
+
+            ]
+        ],
+        [
             'title' => 'Quản lý người dùng',
             'icon' => '<i class="fa fa-users"></i>',
             'name' => ['user', 'permission'],
@@ -52,6 +96,11 @@ return [
                 [
                     'title' => 'Quản lý ngôn ngữ',
                     'route' => 'language.index'
+
+                ],
+                [
+                    'title' => 'Quản lý Module',
+                    'route' => 'generate.index'
 
                 ]
 

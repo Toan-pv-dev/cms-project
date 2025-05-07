@@ -26,11 +26,11 @@
                         <h5>Thông tin chung</h5>
                     </div>
                     <div class="ibox-content">
-                        @include('backend.post.post.components.general')
+                        @include('backend.dashboard.components.general')
                     </div>
                 </div>
                 @include('backend.dashboard.components.album')
-                @include('backend.post.post.components.seo')
+                @include('backend.dashboard.components.seo')
             </div>
 
             <div class="col-lg-3">

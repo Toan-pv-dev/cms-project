@@ -8,5 +8,6 @@ namespace App\Repositories\Interfaces;
  */
 interface RouterRepositoryInterface
 {
+    public function forceDeleteByWhere(array $condition = []);
     // public function pagination($column = ['*'], $condition = [], $join = [], int $perPage = 1, array $extend = [], array $relation = []);
 }

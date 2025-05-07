@@ -21,6 +21,10 @@
     font-style: italic;
 }
 
+.mt10 {
+    margin-top: 10px;
+}
+
 .mg12 {
     margin-top: 12px;
     margin-bottom: 12px;
@@ -386,9 +390,9 @@ input[name=translate_canonical] {
 
 
 
-.language-item.active {
-    background: #e4a5a5;
-    /* width: 100%; */
+.language-item .active {
+    background: blue;
+    width: 100%;
 }
 
 .uk-flex {
@@ -453,4 +457,94 @@ input[name=translate_canonical] {
     vertical-align: middle !important;
     text-align: center !important;
 
+}
+
+.schema {
+    height: 350px !important;
+}
+
+.ibox-title h5 {
+    float: none;
+}
+
+.variant-box .description {
+    font-size: 12px;
+}
+
+
+.variant_checkbox {
+    margin: 0 15px 0px 0 !important;
+    height: 17px !important;
+    width: 17px !important;
+}
+
+.variant-container {
+    margin-top: 30px;
+}
+
+.attribute-title {
+    font-size: 12px;
+    color: #1791f2;
+}
+
+.variant-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.attribute-select {
+    width: 100%;
+}
+
+.fake-variant {
+    height: 42px;
+}
+
+.remove-attribute {
+    line-height: 28px;
+    padding: 6px 14px;
+    font-size: 21px;
+}
+
+.add-variant {
+    height: 42px;
+    color: #059862;
+}
+
+.add-variant {
+    height: 42px;
+    color: #1791f2;
+    border: 1px dashed #1791f2;
+    background-color: #fafafa;
+    text-align: center;
+    border-radius: 5px;
+    transition: 5px;
+    padding: 0 40px;
+
+}
+
+.add-variant:hover {
+    background-color: #efefef;
+}
+
+.select2-container--default .select2-selection--multiple {
+    min-height: 42px !important;
+    height: auto !important;
+    border: 1px solid #ccc;
+    padding: 2px 2px;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* Các tag đã chọn trong select2 */
+
+
+.select2-selection__rendered {
+    font-size: 18px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin: 4px !important;
 }
