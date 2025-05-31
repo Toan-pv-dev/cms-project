@@ -109,12 +109,13 @@ class ProductController extends Controller
     }
     public function edit($id)
     {
+        $attributeCatalogues = $this->attributeCatalogueRepository->getAll($this->currentLanguage());
+
 
         $product = $this->productRepository->getProductById($id, $this->language);
+        $modelInstance = $product;
         $album = json_decode($product->album);
-
         $product_catalogue = $this->catalogue($product);
-
         $config = $this->configData();
         // dd($product_catalogue);
         $config['seo'] = __('messages.product');
@@ -126,13 +127,16 @@ class ProductController extends Controller
             'template',
             'config',
             'product',
+            'modelInstance',
             'dropdown',
             'album',
-            'product_catalogue'
+            'product_catalogue',
+            'attributeCatalogues'
         ));
     }
     public function update($id, UpdateProductRequest $updaterequest,)
     {
+
         if ($this->productService->update($id, $updaterequest)) {
             flash()->success('Cap nhat ban ghi thanh cong');
             return redirect()->route('product.index');

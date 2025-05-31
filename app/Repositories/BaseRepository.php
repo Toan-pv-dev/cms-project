@@ -31,7 +31,6 @@ class BaseRepository implements BaseRepositoryInterface
     ) {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {});
 
-
         if (isset($join) && is_array($join) && count($join)) {
             foreach ($join as $key => $val) {
                 $query->join($val[0], $val[1], $val[2], $val[3]);
@@ -57,6 +56,16 @@ class BaseRepository implements BaseRepositoryInterface
 
         // dd($model);
         return $model;
+    }
+
+    public function createBatch($payload = [])
+    {
+        $now = now();
+        foreach ($payload as &$item) {
+            $item['created_at'] = $now;
+            $item['updated_at'] = $now;
+        }
+        return $this->model->insert($payload);
     }
 
     public function update(int $id = 0, array $payload = [])

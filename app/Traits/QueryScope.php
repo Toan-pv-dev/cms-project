@@ -16,6 +16,7 @@ trait QueryScope
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
+        return $query;
     }
     public function scopePublish($query, $keyword)
     {
@@ -25,6 +26,7 @@ trait QueryScope
                 $query->where("{$table}.publish", '=', $keyword);
             }
         }
+        return $query;
     }
     public function scopeCustomeWhere($query, $where = [])
     {
@@ -34,6 +36,7 @@ trait QueryScope
                 $query->where($val[0], $val[1], $val[2]);
             }
         }
+
         return $query;
     }
     public function scopeCustomeWhereRaw($query, $rawQuery = [])
@@ -46,7 +49,9 @@ trait QueryScope
                 $query->whereRaw($val[0], $val[1]);
             }
         }
-        // return $query;
+        // Debugging line to see the query
+
+        return $query;
     }
     public function scopeRelationCount($query, $relation)
     {

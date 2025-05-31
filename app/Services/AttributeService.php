@@ -43,7 +43,7 @@ class AttributeService  extends BaseService implements AttributeServiceInterface
 
         $perPage = $request->integer('perpage');
         $joins = [
-            ['attribute_language as tb2', 'tb2.attribute_id', '=', 'id'],
+            ['attribute_language as tb2', 'tb2.attribute_id', '=', 'attributes.id'],
             ['attribute_catalogue_attribute as tb3', 'attributes.id', '=', 'tb3.attribute_id']
         ];
 
@@ -56,7 +56,7 @@ class AttributeService  extends BaseService implements AttributeServiceInterface
             $condition,      // Conditions
             $perPage,        // Items per page
             ['path' => 'attribute/index', 'groupBy' => $this->select()], // Extended options
-            ['attributes.id' => 'DESC'], // Order by
+            ['attributes.created_at' => 'DESC'], // Order by
             $joins,
             ['attribute_catalogues'],
             $this->whereRaw($request),
@@ -201,8 +201,6 @@ class AttributeService  extends BaseService implements AttributeServiceInterface
     {
         $payload = $request->only($this->payload());
         $payload['album'] = $this->formatAlbum($payload['album'] ?? null);
-        // dd($payload['album']);
-        // dd($id);
         return $this->attributeRepository->update($id, $payload);
     }
 
@@ -224,7 +222,7 @@ class AttributeService  extends BaseService implements AttributeServiceInterface
     }
     private function updateCatalogueForAttribute($attribute, $request)
     {
-        $attribute->attribute_catalogues()->sync($this->catalogue($request));
+        $res = $attribute->attribute_catalogues()->sync($this->catalogue($request));
     }
 
     private function catalogue($request)

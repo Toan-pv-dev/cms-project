@@ -193,6 +193,7 @@ Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboard::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
 Route::post('ajax/dashboard/changeStatusAll', [AjaxDashboard::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll');
 Route::get('ajax/attribute/getAttribute', [AjaxAttribute::class, 'getAttribute'])->name('ajax.attribute.getAttribute');
+Route::get('ajax/attribute/loadAttribute', [AjaxAttribute::class, 'loadAttribute'])->name('ajax.attribute.loadAttribute');
 
 
 // AuthAuth

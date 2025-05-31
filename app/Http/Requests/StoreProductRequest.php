@@ -24,6 +24,7 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|string',
             'canonical' => 'required|unique:routers,canonical, ' . $this->id . '',
+            'attributes' => 'required|array',
             // 'parent_id' => 'gt:0',
 
 

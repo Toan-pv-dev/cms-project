@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+
 use App\Services\Interfaces\AttributeServiceInterface;
 use App\Services\AttributeService;
 
@@ -51,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
 
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(UserCatalogueServiceInterface::class, UserCatalogueService::class);
         $this->app->bind(LanguageServiceInterface::class, LanguageService::class);
         $this->app->bind(LanguageServiceInterface::class, LanguageService::class);
         $this->app->bind(PostCatalogueServiceInterface::class, PostCatalogueService::class);

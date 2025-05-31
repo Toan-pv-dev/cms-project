@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+
 use App\Repositories\Interfaces\AttributeRepositoryInterface;
 use App\Repositories\AttributeRepository;
 
@@ -27,6 +28,9 @@ use App\Repositories\Interfaces\{
     WardRepositoryInterface,
     DistrictRepositoryInterface,
     ProvinceRepositoryInterface,
+    ProductVariantRepositoryInterface,
+    ProductVariantLanguageRepositoryInterface,
+    ProductVariantAttributeRepositoryInterface,
 };
 
 use App\Repositories\{
@@ -40,7 +44,10 @@ use App\Repositories\{
     RouterRepository,
     WardRepository,
     DistrictRepository,
-    ProvinceRepository
+    ProvinceRepository,
+    ProductVariantRepository,
+    ProductVariantLanguageRepository,
+    ProductVariantAttributeRepository,
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -72,5 +79,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(AttributeCatalogueRepositoryInterface::class, AttributeCatalogueRepository::class);
         $this->app->bind(AttributeRepositoryInterface::class, AttributeRepository::class);
+        $this->app->bind(ProductVariantRepositoryInterface::class, ProductVariantRepository::class);
+        $this->app->bind(ProductVariantLanguageRepositoryInterface::class, ProductVariantLanguageRepository::class);
+        $this->app->bind(ProductVariantAttributeRepositoryInterface::class, ProductVariantAttributeRepository::class);
     }
 }

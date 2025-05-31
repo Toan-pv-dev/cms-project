@@ -28,16 +28,13 @@
                     <p><span class="text-danger notice">Thư mục phụ (*)</span>
                     </p>
 
-                    <select name="post_catalogue[]" class="setupSelect2" class="form-control" placeholder=""
-                        autocomplete="off" multiple="multiple">
+                    <select name="post_catalogue[]" class="setupSelect2 form-control" placeholder="" autocomplete="off"
+                        multiple="multiple">
                         @foreach ($dropdown as $key => $item)
-                            @if ($key != old('post_catalogue_id', $post->post_catalogue_id ?? ''))
-                                <!-- Kiểm tra và loại bỏ post_catalogue_id khỏi danh sách -->
-                                <option @if (is_array(old('post_catalogue', isset($post_catalogue) && count($post_catalogue) ? $post_catalogue : [])) &&
-                                        in_array($key, old('post_catalogue', isset($post_catalogue) ? $post_catalogue : []))) selected @endif value="{{ $key }}">
-                                    {{ $item }}
-                                </option>
-                            @endif
+                            <option @if (is_array(old('post_catalogue', isset($post_catalogue) && count($post_catalogue) ? $post_catalogue : [])) &&
+                                    in_array($key, old('post_catalogue', isset($post_catalogue) ? $post_catalogue : []))) selected @endif value="{{ $key }}">
+                                {{ $item }}
+                            </option>
                             {{-- <option value="{{ $key }}" @if (in_array($key, old('catalogues', isset($post->catalogues) ? (is_array($post->catalogues) ? $post->catalogues : explode(',', $post->catalogues)) : []))) selected @endif>
                                 {{ $item }}
                             </option> --}}

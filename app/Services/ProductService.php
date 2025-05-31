@@ -5,6 +5,8 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use App\Services\Interfaces\ProductServiceInterface;
 use App\Repositories\ProductRepository as ProductRepository;
+use App\Repositories\ProductVariantLanguageRepository as ProductVariantLanguageRepository;
+use App\Repositories\ProductVariantAttributeRepository as ProductVariantAttributeRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\BaseService;
@@ -22,15 +24,19 @@ class ProductService  extends BaseService implements ProductServiceInterface
     protected $productRepository;
     protected $nestedSet;
     protected $controllerName = 'ProductController';
+    protected $productVariantLanguageRepository;
+    protected $productVariantAttributeRepository;
 
-    public function __construct(ProductRepository $productRepository, RouterRepository $routerRepository)
+    public function __construct(ProductRepository $productRepository, RouterRepository $routerRepository, ProductVariantLanguageRepository $productVariantLanguageRepository, ProductVariantAttributeRepository $productVariantAttributeRepository)
     {
         $this->productRepository = $productRepository;
         $this->routerRepository = $routerRepository;
+        $this->productVariantLanguageRepository = $productVariantLanguageRepository;
+        $this->productVariantAttributeRepository = $productVariantAttributeRepository;
     }
     public function select()
     {
-        return ['products.id', 'products.publish', 'products.image', 'products.order', 'tb2.name'];
+        return ['products.id', 'products.publish', 'products.image', 'products.order', 'tb2.name', 'products.attributeCatalogue'];
     }
     public function paginate($request)
     {
@@ -68,12 +74,14 @@ class ProductService  extends BaseService implements ProductServiceInterface
     {
         DB::beginTransaction();
         try {
+
             $product = $this->createProduct($request);
 
             if ($product->id > 0) {
                 $this->updateLanguageForProduct($product, $request);
                 $this->updateCatalogueForProduct($product, $request);
                 $this->createRouter($product, $request, $this->controllerName, $this->currentLanguage());
+                $this->createVariant($product, $request);
             }
             DB::commit();
             return $product;
@@ -82,6 +90,59 @@ class ProductService  extends BaseService implements ProductServiceInterface
             Log::error('Error during product creation: ' . $e->getMessage());
             throw new \Exception('Error creating the product: ' . $e->getMessage()); // Rethrow with a custom message
         }
+    }
+
+    private function createVariant($product, $request)
+    {
+
+        $payload = $request->only(['attributes', 'variants']);
+        $variantPayload = $payload['variants'] ?? [];
+
+        $variant = $this->createVariantArray($variantPayload);
+        $product->product_variants()->delete();
+        $variants = $product->product_variants()->createMany($variant);
+        $variantIds = $variants->pluck('id');
+        if (count($variantIds)) {
+            foreach ($variantIds as $key => $val) {
+                $code = $payload['variants'][$key]['attribute_ids'];
+                $attributeIds = explode('-', $code);
+                $productVariantLanguage[] = [
+                    'product_variant_id' => $val,
+                    'language_id' => $this->currentLanguage(),
+                    'name' => $payload['variants'][$key]['name']
+                ];
+
+                foreach ($attributeIds as $attributeId) {
+                    $productVariantAttribute[] = [
+                        'product_variant_id' => $val,
+                        'attribute_id' => (int)$attributeId,
+                    ];
+                }
+            }
+
+            // Batch insert product variant languages using the repository
+            $res = $this->productVariantLanguageRepository->createBatch($productVariantLanguage);
+            $this->productVariantAttributeRepository->createBatch($productVariantAttribute);
+        }
+    }
+
+    private function createVariantArray($payload)
+    {
+
+        foreach ($payload as $variantData) {
+            $data[] = [
+                'name' => $variantData['name'] ?? null,
+                'sku'            => $variantData['sku'] ?? null,
+                'quantity'       => $variantData['quantity'] ?? 0,
+                'price'          => str_replace('.', '', $variantData['price']) ?? 0, // Chuyển về int
+                'code'  => $variantData['attribute_ids'] ?? '',
+                'album'          => $variantData['album'] ?? null,
+                'file_name'      => $variantData['file_name'] ?? null,
+                'file_url'      => $variantData['file_path'] ?? null,
+                'user_id' => Auth::id(),
+            ];
+        }
+        return $data;
     }
 
 
@@ -99,6 +160,13 @@ class ProductService  extends BaseService implements ProductServiceInterface
                 $this->updateLanguageForProduct($product, $request);
                 $this->updateCatalogueForProduct($product, $request);
                 $this->updateRouter($product, $request, $this->controllerName, $this->currentLanguage());
+
+                $product->product_variants()->each(function ($variant) {
+                    $variant->languages()->detach();
+                    $variant->attributes()->detach();
+                    $variant->delete();
+                });
+                $this->createVariant($product, $request);
             }
             DB::commit();
 
@@ -187,6 +255,10 @@ class ProductService  extends BaseService implements ProductServiceInterface
     {
 
         $payload = $request->only($this->payload());
+        $payload['attributeCatalogue'] = json_encode($payload['attribute_catalogue_id']);
+        unset($payload['attribute_catalogue_id']);
+        $payload['attributes'] = json_encode($this->getAttribute($request));
+        $payload['variants'] = json_encode($payload['variants']);
         $payload['user_id'] = Auth::id();
         $payload['album'] = $this->formatAlbum($payload['album'] ?? null);
         // dd($payload);
@@ -194,6 +266,20 @@ class ProductService  extends BaseService implements ProductServiceInterface
         // dd($product);
         return $product;
     }
+
+
+
+    private function getAttribute($request)
+    {
+        $attributes = $request->input('attributes', []);
+        $result = [];
+
+        foreach ($attributes as $index => $attribute) {
+            $result[$index] = $attribute['values'];
+        }
+        return $result;
+    }
+
 
     private function updateProduct($id, $request)
     {
@@ -260,7 +346,7 @@ class ProductService  extends BaseService implements ProductServiceInterface
 
     private function payload()
     {
-        return ['follow', 'publish', 'image', 'album', 'product_catalogue_id'];
+        return ['follow', 'publish', 'image', 'album', 'product_catalogue_id', 'attribute_catalogue_id', 'attribute', 'variants'];
     }
     private function payloadLanguage()
     {

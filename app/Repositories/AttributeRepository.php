@@ -31,6 +31,7 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
         array $rawQuery = [],
     ) {
         $query = $this->model->select($column);
+
         $query = $query->keyword($condition['keyword'] ?? NULL)
             ->publish($condition['publish'] ?? NULL)
             ->CustomeWhereRaw($rawQuery ?? null)
@@ -42,6 +43,7 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
             ->paginate($perPage)
             ->withQueryString()
             ->withPath(env('APP_URL') . $extend['path']);
+
         return $query;
     }
     public function getAttributeById(int $id = 0, $language_id = 0)
@@ -76,6 +78,13 @@ class AttributeRepository extends BaseRepository implements AttributeRepositoryI
             $query->where('attribute_catalogue_id', $option['attributeCatalogueId']);
         })->whereHas('attribute_language', function ($query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%');
+        })->get();
+    }
+
+    public function findAttributeByCondition(array $attributeIds, int $languageId)
+    {
+        return $this->model->whereIn('id', $attributeIds)->whereHas('attribute_language', function ($query) use ($languageId) {
+            $query->where('language_id', $languageId);
         })->get();
     }
 }

@@ -39,4 +39,25 @@ class AttributeController extends Controller
         })->all();
         return response()->json(['item' => $attributeMapped]);
     }
+    public function loadAttribute(Request $request)
+    {
+        $catalogueId = $request->input('catalogue_id');
+        $values = $request->input('values', []);
+
+        if (!$catalogueId || empty($values)) {
+            return response()->json(['items' => []]); // trả về rỗng nếu thiếu dữ liệu
+        }
+
+        $attributes = $this->attributeRepository->findAttributeByCondition($values, $this->language);
+
+        $temp = [];
+        foreach ($attributes as $item) {
+            $temp[] = [
+                'id' => $item->id,
+                'text' => $item->attribute_language->first()->name ?? '',
+            ];
+        }
+
+        return response()->json(['items' => $temp]);
+    }
 }

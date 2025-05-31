@@ -42,4 +42,8 @@ class Language extends Model
     {
         return $this->belongsToMany(Attribute::class, 'attribute_language', 'language_id', 'attribute_id')->withPivot('name', 'canonical', 'meta_title', 'meta_keyword', 'meta_description', 'description', 'content')->withTimestamps();
     }
+    public function product_variant()
+    {
+        return $this->belongsToMany(Product::class, 'product_variant_language', 'language_id', 'product_variant_id')->withPivot('name')->withTimestamps();
+    }
 }

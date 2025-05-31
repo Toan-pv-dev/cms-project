@@ -25,6 +25,10 @@
     margin-top: 10px;
 }
 
+.mt20 {
+    margin-top: 20px;
+}
+
 .mg12 {
     margin-top: 12px;
     margin-bottom: 12px;
@@ -184,6 +188,10 @@ table strong {
     justify-content: space-around;
 }
 
+.align-center {
+    text-align: center;
+}
+
 .notice {
     font-size: 11px;
     font-style: italic;
@@ -268,6 +276,11 @@ input[name=translate_canonical] {
     padding-left: 0;
 }
 
+#sortable2 {
+    list-style: none;
+    padding-left: 0;
+}
+
 .sortui .ui-state-default {
     width: calc(20%);
     float: left;
@@ -300,18 +313,22 @@ input[name=translate_canonical] {
 
 }
 
-.click-to-upload {
+.click-to-upload,
+.click-to-upload-variant {
     text-align: center;
     padding: 20px;
     border: 1px dashed #ddd;
     /* display: none; */
 }
 
-#sortable .thumb {
+#sortable .thumb,
+#sortable2 .thumb {
     position: relative;
 }
 
-#sortable .delete-image {
+
+#sortable .delete-image,
+#sortable2 .delete-image {
     position: absolute;
     /* background: linear-gradient(to bottom, #fff, #f9fafb); */
     /* float: left; */
@@ -327,10 +344,13 @@ input[name=translate_canonical] {
 
 }
 
-#sortable .delete-image:hover {
+
+#sortable .delete-image:hover,
+#sortable2 .delete-image:hover {
     background: red;
     color: #fff;
 }
+
 
 /* .hidden {
     display: none;
@@ -547,4 +567,18 @@ input[name=translate_canonical] {
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     margin: 4px !important;
+}
+
+.upload-variant-list {
+    margin-bottom: 30px;
+    /* tạo khoảng cách dưới cho ảnh */
+    display: block;
+    width: 100%;
+    clear: both;
+}
+
+.second-content {
+    clear: both;
+    display: block;
+    width: 100%;
 }

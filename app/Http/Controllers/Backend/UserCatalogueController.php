@@ -30,6 +30,7 @@ class UserCatalogueController extends Controller
 
 
 
+
         // dd(config('apps.usercatalogue'));
         $config = [
             'js' => [
