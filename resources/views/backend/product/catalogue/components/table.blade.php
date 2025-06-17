@@ -7,7 +7,7 @@
             <th>Ảnh</th>
             <th>Tên nhóm</th>
             @foreach ($languages as $language)
-                @if (session('locale') == $language->canonical)
+                @if (session('app_locale') == $language->canonical)
                     @continue
                 @endif
                 <th style="width: 120px; height: 50px; text-align: center; vertical-align: middle;">
@@ -38,7 +38,7 @@
                         {{ str_repeat('|____', $productCatalogue->level > 0 ? $productCatalogue->level - 1 : 0) . $productCatalogue->name }}
                     </td>
                     @foreach ($languages as $language)
-                        @if (session('locale') == $language->canonical)
+                        @if (session('app_locale') == $language->canonical)
                             @continue
                         @endif
                         {{-- @dd($languages) --}}

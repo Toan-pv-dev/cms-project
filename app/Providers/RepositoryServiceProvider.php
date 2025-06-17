@@ -31,6 +31,11 @@ use App\Repositories\Interfaces\{
     ProductVariantRepositoryInterface,
     ProductVariantLanguageRepositoryInterface,
     ProductVariantAttributeRepositoryInterface,
+    SystemRepositoryInterface,
+    MenuRepositoryInterface,
+    MenuCatalogueRepositoryInterface,
+    SlideRepositoryInterface,
+    WidgetRepositoryInterface
 };
 
 use App\Repositories\{
@@ -48,6 +53,11 @@ use App\Repositories\{
     ProductVariantRepository,
     ProductVariantLanguageRepository,
     ProductVariantAttributeRepository,
+    SystemRepository,
+    MenuRepository,
+    MenuCatalogueRepository,
+    SlideRepository,
+    WidgetRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -82,5 +92,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductVariantRepositoryInterface::class, ProductVariantRepository::class);
         $this->app->bind(ProductVariantLanguageRepositoryInterface::class, ProductVariantLanguageRepository::class);
         $this->app->bind(ProductVariantAttributeRepositoryInterface::class, ProductVariantAttributeRepository::class);
+        $this->app->bind(SystemRepositoryInterface::class, SystemRepository::class);
+        $this->app->bind(MenuRepositoryInterface::class, MenuRepository::class);
+        $this->app->bind(MenuCatalogueRepositoryInterface::class, MenuCatalogueRepository::class);
+        $this->app->bind(SlideRepositoryInterface::class, SlideRepository::class);
+        $this->app->bind(WidgetRepositoryInterface::class, WidgetRepository::class);
     }
 }

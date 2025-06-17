@@ -9,10 +9,9 @@
     };
 
     // Select2 initialization
-    var select2Init = () => {
-        $('.setupSelect2').select2({
-        });
-    };
+    // var select2Init = () => {
+    //     $('.setupSelect2').select2();
+    // };
 
     var changeStatus = () => {
         $(document).on('change', '.status', function (e) {
@@ -152,7 +151,7 @@
     // Document ready
     $(document).ready(function () {
         switcheryInit(); // Initialize Switchery
-        select2Init();
+        // select2Init();
         changeStatus();
         toggleRowBackground();
         changeStatusAll();

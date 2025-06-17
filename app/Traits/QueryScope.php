@@ -16,6 +16,7 @@ trait QueryScope
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
+
         return $query;
     }
     public function scopePublish($query, $keyword)
@@ -41,18 +42,16 @@ trait QueryScope
     }
     public function scopeCustomeWhereRaw($query, $rawQuery = [])
     {
-        // dd($rawQuery);
         if (!empty($rawQuery['whereRaw'])) {
-
-            foreach ($rawQuery['whereRaw'] as $key => $val) {
-
-                $query->whereRaw($val[0], $val[1]);
+            foreach ($rawQuery['whereRaw'] as $val) {
+                if (isset($val[0], $val[1]) && is_array($val[1])) {
+                    $query->whereRaw($val[0], $val[1]);
+                }
             }
         }
-        // Debugging line to see the query
-
         return $query;
     }
+
     public function scopeRelationCount($query, $relation)
     {
         if (!empty($relation)) {
@@ -83,15 +82,14 @@ trait QueryScope
     }
     public function scopeCustomeGroupBy($query, $groupBy)
     {
-        // dd($groupBy);
         if (!empty($groupBy)) {
-            $query->groupBy($groupBy);
+            $query->groupBy(...$groupBy);
         }
         return $query;
     }
+
     public function scopeCustomeOrderBy($query,  $orderBy)
     {
-        // dd($orderBy);
         if (!empty($orderBy)) {
             foreach ($orderBy as $key => $val) {
                 $query->orderBy($key, $val);

@@ -155,7 +155,7 @@ class LanguageController extends Controller
         if ($this->languageService->switch($id)) {
 
             App::setLocale($locale->canonical);
-            session(['locale' => $locale->canonical]);
+            session(['app_locale' => $locale->canonical]);
         }
         // dd(App::getLocale());
 

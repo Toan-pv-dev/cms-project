@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\QueryScope;
+
+use Illuminate\Database\Eloquent\Builder;
 
 
 class PostCatalogue extends Model
 {
     protected $table = 'post_catalogues';
 
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, QueryScope;
     protected $fillable = [
         'parent_id',
         'lft',

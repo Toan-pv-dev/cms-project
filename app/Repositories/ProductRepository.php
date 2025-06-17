@@ -45,7 +45,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $query;
     }
     public function getProductById(int $id = 0, $language_id = 0)
-
     {
         return $this->model
             ->select([

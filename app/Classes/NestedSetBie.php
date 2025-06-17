@@ -31,13 +31,14 @@ class Nestedsetbie
 
     public function Get()
     {
+
         // dd($this->params);
-        $catalogue = '_catalogue';
+        $catalogue = (isset($this->params['isMenu']) && $this->params['isMenu'] == true) ? '' : '_catalogue';
         $foreignkey = (isset($this->params['foreignkey'])) ? $this->params['foreignkey'] : 'post_catalogue_id';
         $moduleExtract = explode('_', $this->params['table']);
         // dd($moduleExtract);
 
-        $join = $moduleExtract[0];
+        $join = (isset($this->params['isMenu']) && $this->params['isMenu'] == true) ? rtrim($moduleExtract[0], 's') : $moduleExtract[0];
         // dd($join);
         $result = DB::table($this->params['table'] . ' as tb1')
             ->select('tb1.id', 'tb2.name', 'tb1.parent_id', 'tb1.lft', 'tb1.rgt', 'tb1.level', 'tb1.order')
@@ -47,7 +48,6 @@ class Nestedsetbie
         // dd($result);
 
         $this->data = $result;
-        // dd($result);
     }
 
     public function Set()

@@ -1,6 +1,7 @@
 (function ($) {
     "use strict";
     var HT = {};
+
     HT.setupCkEditor = () => {
         if ($('.ck-editor')) {
             $('.ck-editor').each(function () {
@@ -162,6 +163,7 @@
 
     // Document ready
     $(document).ready(function () {
+        console.log(1);
         HT.uploadImageToInput();
         HT.setupCkEditor();
         HT.uploadImageAvatar();

@@ -21,6 +21,18 @@
     font-style: italic;
 }
 
+.pl8 {
+    padding: 8px;
+}
+
+.m10 {
+    margin: 10px;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
 .mt10 {
     margin-top: 10px;
 }
@@ -34,12 +46,29 @@
     margin-bottom: 12px;
 }
 
+
+.pr10 {
+    padding-right: 10px;
+}
+
 .mb10 {
     margin-bottom: 10px;
 }
 
 .mb15 {
     margin-bottom: 15px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.mb8 {
+    margin-bottom: 8px;
+}
+
+.ml20 {
+    margin-left: 20px;
 }
 
 .p0 {
@@ -199,12 +228,7 @@ table strong {
 
 
 
-.img.img-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+
 
 .img-target {
     cursor: pointer;
@@ -363,12 +387,7 @@ input[name=translate_canonical] {
     border-radius: 5px;
 }
 
-.img-cover {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+
 
 .main_title span {
     color: #337ab7;
@@ -399,8 +418,7 @@ input[name=translate_canonical] {
 }
 
 .language-item {
-    height: 60px;
-    width: 100%;
+    height: 40px;
     margin-left: 10px;
     /* padding: 0 !important; */
     margin-top: 10px;
@@ -410,10 +428,6 @@ input[name=translate_canonical] {
 
 
 
-.language-item .active {
-    background: blue;
-    width: 100%;
-}
 
 .uk-flex {
     display: flex;
@@ -423,16 +437,6 @@ input[name=translate_canonical] {
     align-items: center;
 }
 
-/* Language selector styles */
-/* .language-item {
-    height: 60px;
-    width: 100%;
-    margin-left: 10px;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
 
 .language-item img {
     /* width: 100%; */
@@ -581,4 +585,255 @@ input[name=translate_canonical] {
     clear: both;
     display: block;
     width: 100%;
+}
+
+.system_link {
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+
+.language-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.system-language-item {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.language-box {
+    padding: 6px;
+    border-radius: 8px;
+    transition: background-color 0.3s, border 0.3s;
+}
+
+.system-language-item.active .language-box {
+    background-color: #e0f0ff;
+    border: 2px solid #007bff;
+}
+
+.img-flag {
+    width: 40px;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.delete-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100%; */
+    width: 100%;
+    /* border: 1px solid #ced4da; */
+    text-decoration: none;
+
+}
+
+.delete-menu i {
+    font-size: 30px;
+    color: #c1c1be;
+    font-weight: 100;
+}
+
+.error.name,
+.error.keyword {
+    color: red;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.form-success {
+    color: #18a689;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.item-input-checkbox {
+    margin: 0 5px 10px 0 !important;
+}
+
+.item-label {
+    font-weight: 400;
+    font-size: small;
+    margin-bottom: 10px;
+    color: blue;
+}
+
+.pointer {
+    cursor: pointer;
+    min-width: 100px;
+    /* để có kích thước tối thiểu */
+    min-height: 20px;
+}
+
+.create-children-menu {
+    position: absolute;
+    right: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    top: 10px;
+}
+
+.control-label {
+    padding: 0px !important;
+}
+
+.slide-input-item {
+    padding-bottom: 10px;
+}
+
+#arrow-checkbox {
+    width: 20px;
+    height: 20px;
+    bottom: 2px;
+    cursor: pointer;
+}
+
+.ibox-content,
+.ibox-content * {
+    font-weight: 500;
+    font-size: medium;
+}
+
+.text-area-shortcode {
+    width: 100% !important;
+    padding: 8px !important;
+}
+
+.slide-input-border {
+    padding: 0 !important;
+}
+
+.open_new_tab-checkbox {
+    width: 25px !important;
+    margin: 0 0 3px 0 !important;
+}
+
+.slide-open-new-tab1-wrapper {
+    padding: 0 0 0 10px !important;
+}
+
+textarea.form-control {
+    resize: vertical;
+    /* Chỉ cho phép kéo theo chiều dọc */
+    max-width: 100%;
+    /* Không vượt quá chiều rộng container */
+    width: 100%;
+    /* Chiếm toàn bộ chiều rộng */
+    box-sizing: border-box;
+    /* Bao gồm padding và border trong tính toán kích thước */
+    min-height: 80px;
+    /* Chiều cao tối thiểu */
+    max-height: 200px;
+    /* Chiều cao tối đa */
+}
+
+.model-item label {
+    padding-left: 10px;
+    top: 5px;
+    position: relative;
+}
+
+.search-model-box {
+    position: relative;
+    width: 100%;
+    /* hoặc chiều rộng cụ thể */
+}
+
+.search-model-box .search-model {
+    padding-right: 35px;
+    /* chừa khoảng trống bên phải cho icon */
+}
+
+.search-model-box .fa-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    /* để không ảnh hưởng khi người dùng bấm vào */
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.item-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.width-thumb img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.name {
+    font-size: 14px;
+    color: #333;
+}
+
+.remove-item {
+    color: #999;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.remove-item:hover {
+    color: red;
+}
+
+.ajax-search-result {
+    padding: 0;
+    margin: 0;
+}
+
+.ajax-search-item {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background: #f9f9f9;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s ease;
+}
+
+.ajax-search-item:hover {
+    background: #f0f0f0;
+}
+
+.full-width {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.item-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.item-icon i {
+    color: green;
+    font-size: 16px;
 }

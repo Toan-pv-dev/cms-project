@@ -18,18 +18,21 @@
         </div>
     </div>
 </div>
-<div class="row mb15">
-    <div class="col-lg-12">
-        <div class="form-row">
-            <div class="uk-flex uk-flex-middle uk-flex-between">
+@if (!isset($offTitle))
+    <div class="row mb15">
+        <div class="col-lg-12">
+            <div class="form-row">
+                <div class="uk-flex uk-flex-middle uk-flex-between">
 
-                <label for="" class="control-label text-left">Nội dung</label>
-                <a href="" class="multipleUploadImageCkeditor" data-target="content"> Upload nhiều hình ảnh</a>
+                    <label for="" class="control-label text-left">Nội dung</label>
+                    <a href="" class="multipleUploadImageCkeditor" data-target="content"> Upload nhiều hình
+                        ảnh</a>
+                </div>
+
+                <textarea type="text" name="content" class="form-control ck-editor" placeholder="" autocomplete="off" id="content"
+                    {{ isset($disabled) ? 'disabled' : '' }} data-height="500">{{ old('content', $modelInstance->content ?? '') }} {{ isset($disabled) ? 'disabled' : '' }}</textarea>
             </div>
 
-            <textarea type="text" name="content" class="form-control ck-editor" placeholder="" autocomplete="off" id="content"
-                {{ isset($disabled) ? 'disabled' : '' }} data-height="500">{{ old('content', $modelInstance->content ?? '') }} {{ isset($disabled) ? 'disabled' : '' }}</textarea>
         </div>
-
     </div>
-</div>
+@endif

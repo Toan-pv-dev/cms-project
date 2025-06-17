@@ -3,9 +3,9 @@
 return [
     'module' => [
         [
-            'title' => 'Quản lý danh muc thuoc tinh',
+            'title' => 'Quản lý danh mục thuộc tính',
             'icon' => '<i class="fa fa-users"></i>',
-            'name' => ['product', 'attribute'],
+            'name' => ['attribute', 'permission'],
             'subModule' => [
 
                 [
@@ -21,26 +21,18 @@ return [
             ]
         ],
         [
-            'title' => 'Quản lý danh muc san pham',
+            'title' => 'Quản lý danh muc sản phẩm',
             'icon' => '<i class="fa fa-users"></i>',
             'name' => ['product', 'permission'],
             'subModule' => [
 
                 [
-                    'title' => 'Quản lý nhóm thành viên',
+                    'title' => 'Quản lý nhóm sản phẩm',
                     'route' => 'product.catalogue.index'
-                ]
-
-            ]
-        ],
-        [
-            'title' => 'Quản lý san pham',
-            'icon' => '<i class="fa fa-users"></i>',
-            'name' => ['product', 'permission'],
-            'subModule' => [
+                ],
 
                 [
-                    'title' => 'Quản lý nhóm thành viên',
+                    'title' => 'Quản lý sản phẩm',
                     'route' => 'product.index'
                 ]
 
@@ -89,6 +81,21 @@ return [
         ],
 
         [
+            'title' => 'QL Menu',
+            'icon' => '<i class="fa fa-bar"></i>',
+            'name' => ['language', 'menu'],
+            'subModule' => [
+                [
+                    'title' => 'Cài đặt Menu',
+                    'route' => 'menu.index'
+
+                ],
+
+
+            ]
+        ],
+
+        [
             'title' => 'Cấu hình chung',
             'icon' => '<i class="fa fa-cog"></i>',
             'name' => ['language', 'system'],
@@ -102,10 +109,45 @@ return [
                     'title' => 'Quản lý Module',
                     'route' => 'generate.index'
 
-                ]
+                ],
+                [
+                    'title' => 'Cấu hình hệ thống',
+                    'route' => 'system.index'
+
+                ],
+
 
             ]
-        ]
+        ],
+        [
+            'title' => 'Quản lý Banner, Slide và Hình ảnh',
+            'icon' => '<i class="fa fa-file-image-o"></i>',
+            'name' => ['slide'],
+            'subModule' => [
+                [
+                    'title' => 'Cài đặt Slide',
+                    'route' => 'slide.index'
+
+                ],
+
+            ]
+        ],
+
+        [
+            'title' => 'Quản lý Widget',
+            'icon' => '<i class="fa fa-file-image-o"></i>',
+            'name' => ['widget'],
+            'subModule' => [
+                [
+                    'title' => 'Quản lý Widget',
+                    'route' => 'widget.index'
+
+                ],
+
+            ]
+        ],
+
+
     ]
 
 

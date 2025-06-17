@@ -1,5 +1,45 @@
 <?php
 return [
+    'widget' => [
+        'index' => [
+            'title' => 'Danh sách widget',
+        ],
+        'create' => [
+            'title' => 'Thêm mới widget',
+        ],
+
+    ],
+    'system' => [
+        'index' => [
+            'title' => 'Cấu hình hệ thống',
+        ],
+
+    ],
+    'slide' => [
+        'index' => [
+            'title' => 'Danh sách slide',
+        ],
+        'create' => [
+            'title' => 'Thêm mới slide',
+        ],
+        'update' => [
+            'title' => 'Chỉnh sửa slide',
+        ],
+
+    ],
+
+    'menu' => [
+        'index' => [
+            'title' => 'Cài đặt Menu',
+        ],
+        'create' => [
+            'title' => 'Thêm mới menu',
+        ],
+        'show' => [
+            'title' => 'Danh sách menu',
+        ],
+
+    ],
     'attribute' => [
         'index' => [
             'title' => 'Quản lý loai thuoc tinh',

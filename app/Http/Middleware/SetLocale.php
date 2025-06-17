@@ -10,9 +10,9 @@ class SetLocale
 {
     public function handle($request, Closure $next)
     {
-        if (Session::has('locale')) {
+        if (Session::has('app_locale')) {
 
-            App::setLocale(Session::get('locale'));
+            App::setLocale(Session::get('app_locale'));
         }
         return $next($request);
     }

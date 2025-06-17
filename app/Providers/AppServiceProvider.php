@@ -24,6 +24,11 @@ use App\Services\Interfaces\{
     PostServiceInterface,
     PermissionServiceInterface,
     GenerateServiceInterface,
+    SystemServiceInterface,
+    MenuServiceInterface,
+    MenuCatalogueServiceInterface,
+    SlideServiceInterface,
+    WidgetServiceInterface
 };
 use App\Services\{
     UserCatalogueService,
@@ -33,6 +38,11 @@ use App\Services\{
     PostService,
     PermissionService,
     GenerateService,
+    SystemService,
+    MenuService,
+    MenuCatalogueService,
+    SlideService,
+    WidgetService
 };
 
 class AppServiceProvider extends ServiceProvider
@@ -63,5 +73,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(AttributeCatalogueServiceInterface::class, AttributeCatalogueService::class);
         $this->app->bind(AttributeServiceInterface::class, AttributeService::class);
+        $this->app->bind(SystemServiceInterface::class, SystemService::class);
+        $this->app->bind(MenuServiceInterface::class, MenuService::class);
+        $this->app->bind(MenuCatalogueServiceInterface::class, MenuCatalogueService::class);
+        $this->app->bind(SlideServiceInterface::class, SlideService::class);
+        $this->app->bind(WidgetServiceInterface::class, WidgetService::class);
     }
 }

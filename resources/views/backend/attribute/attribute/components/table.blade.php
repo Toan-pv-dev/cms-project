@@ -6,15 +6,17 @@
             </th>
             <th>Tiêu đề</th>
             @foreach ($languages as $language)
-                @if (session('locale') == $language->canonical)
+                @if (session('app_locale') == $language->canonical)
                     @continue
+                @else
+                    <th style="width: 120px; height: 50px; text-align: center; vertical-align: middle;">
+                        <div
+                            style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                            <img src="{{ $language->image }}" alt=""
+                                style="max-width: 60%; max-height: 50%; object-fit: cover;">
+                        </div>
+                    </th>
                 @endif
-                <th style="width: 120px; height: 50px; text-align: center; vertical-align: middle;">
-                    <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
-                        <img src="{{ $language->image }}" alt=""
-                            style="max-width: 60%; max-height: 50%; object-fit: cover;">
-                    </div>
-                </th>
             @endforeach
             <th style="width: 80px" class="text-center">Vị trí</th>
             <th class="text-center">Tình trạng</th>
@@ -55,23 +57,24 @@
                         </div>
                     </td>
                     @foreach ($languages as $language)
-                        @if (session('locale') == $language->canonical)
+                        @if (session('app_locale') == $language->canonical)
                             @continue
+                        @else
+                            <td class="text-center">
+                                @php
+                                    $hasTranslation = $language->attribute->contains($attribute->id);
+                                @endphp
+                                @if ($hasTranslation)
+                                    <a
+                                        href="{{ route('language.translate', ['id' => $attribute->id, 'languageId' => $language->id, 'model' => 'Attribute']) }}">Đã
+                                        dịch</a>
+                                @else
+                                    <a
+                                        href="{{ route('language.translate', ['id' => $attribute->id, 'languageId' => $language->id, 'model' => 'Attribute']) }}">Chưa
+                                        dịch</a>
+                                @endif
+                            </td>
                         @endif
-                        <td class="text-center">
-                            @php
-                                $hasTranslation = $language->attribute->contains($attribute->id);
-                            @endphp
-                            @if ($hasTranslation)
-                                <a
-                                    href="{{ route('language.translate', ['id' => $attribute->id, 'languageId' => $language->id, 'model' => 'Attribute']) }}">Đã
-                                    dịch</a>
-                            @else
-                                <a
-                                    href="{{ route('language.translate', ['id' => $attribute->id, 'languageId' => $language->id, 'model' => 'Attribute']) }}">Chưa
-                                    dịch</a>
-                            @endif
-                        </td>
                     @endforeach
                     <td>
                         <input type="number" name="order" class="form-control sort-order text-center"

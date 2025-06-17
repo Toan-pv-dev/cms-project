@@ -8,12 +8,17 @@ use App\Http\Controllers\Ajax\DashboardController as AjaxDashboard;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\backend\UserCatalogueController;
 use App\Http\Controllers\Ajax\LocationController;
+use App\Http\Controllers\Ajax\MenuController as AjaxMenuController;
 use App\Http\Controllers\Ajax\AttributeController as AjaxAttribute;
 use App\Http\Controllers\Backend\LanguageController;
+use App\Http\Controllers\Backend\MenuController;
 use App\Http\Controllers\backend\PostCatalogueController;
 use App\Http\Controllers\backend\PostController;
+use App\Http\Controllers\backend\SystemController;
 use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\GenerateController;
+use App\Http\Controllers\Backend\SlideController;
+use App\Http\Controllers\Backend\WidgetController;
 // use CKSource\CKFinder\Acl\Permission;
 use App\Http\Controllers\Backend\ProductCatalogueController;
 
@@ -72,7 +77,53 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::post('storeTranslate', [LanguageController::class, 'storeTranslate'])->name('language.storeTranslate');
     });
 
+    // system
+
+    Route::group(['prefix' => 'system'], function () {
+        Route::get('index', [SystemController::class, 'index'])->name('system.index');
+        Route::post('store', [SystemController::class, 'store'])->name('system.store');
+        Route::get('translate/{languageId}', [SystemController::class, 'translate'])->name('system.translate');
+        Route::post('saveTranslate/{languageId}', [SystemController::class, 'saveTranslate'])->name('system.save.translate');
+    });
+
+
+    // menu
+    Route::group(['prefix' => 'menu'], function () {
+        Route::get('index', [MenuController::class, 'index'])->name('menu.index');
+        Route::get('create', [MenuController::class, 'create'])->name('menu.create');
+        Route::post('store', [MenuController::class, 'store'])->name('menu.store');
+        Route::get('translate/{languageId}', [MenuController::class, 'translate'])->name('menu.translate');
+        Route::post('saveTranslate/{languageId}', [MenuController::class, 'saveTranslate'])->name('menu.save.translate');
+        Route::get('edit/{id}', [MenuController::class, 'edit'])->name('menu.edit');
+        Route::get('showChildren/{id}', [MenuController::class, 'showChildren'])->name('menu.children');
+        Route::post('saveChildren/{id}', [MenuController::class, 'saveChildren'])->name('menu.saveChildren');
+        Route::get('editMenu/{id}', [MenuController::class, 'editMenu'])->name('menu.editMenu');
+        Route::get('delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
+        Route::post('destroy/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
+    });
+    // slide
+
+    Route::group(['prefix' => 'slide'], function () {
+        Route::post('store', [SlideController::class, 'store'])->name('slide.store');
+        Route::get('index', [SlideController::class, 'index'])->name('slide.index');
+        Route::get('create', [SlideController::class, 'create'])->name('slide.create');
+        Route::get('edit/{id}', [SlideController::class, 'edit'])->name('slide.edit');
+        Route::post('update/{id}', [SlideController::class, 'update'])->name('slide.update');
+        Route::get('delete/{id}', [SlideController::class, 'delete'])->name('slide.delete');
+        Route::post('destroy/{id}', [SlideController::class, 'destroy'])->name('slide.destroy');
+    });
+    Route::group(['prefix' => 'widget'], function () {
+        Route::post('store', [WidgetController::class, 'store'])->name('widget.store');
+        Route::get('index', [WidgetController::class, 'index'])->name('widget.index');
+        Route::get('create', [WidgetController::class, 'create'])->name('widget.create');
+        Route::get('edit/{id}', [WidgetController::class, 'edit'])->name('widget.edit');
+        Route::post('update/{id}', [WidgetController::class, 'update'])->name('widget.update');
+        Route::get('delete/{id}', [WidgetController::class, 'delete'])->name('widget.delete');
+        Route::post('destroy/{id}', [WidgetController::class, 'destroy'])->name('widget.destroy');
+    });
+
     //generate
+
     Route::group(['prefix' => 'generate'], function () {
         Route::post('store', [GenerateController::class, 'store'])->name('generate.store');
         Route::get('index', [GenerateController::class, 'index'])->name('generate.index');
@@ -133,9 +184,7 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
 
     // GalleryCatalogue routes
 
-
     // ProductCatalogue routes
-
 
     // Product routes
 
@@ -172,21 +221,8 @@ Route::group(['middleware' => ['admin', 'locale']], function () {
         Route::post('destroy/{id}', [AttributeController::class, 'destroy'])->name('attribute.destroy');
     });
     //@@new-module@@
-
-
-
-
-
-
-
-
-
-
-
     Route::get('dashboard/index', [DashboardController::class, 'index'])->where(['id' => '[0-9]+'])->name('dashboard.index');
 });
-
-
 
 // Ajax
 Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location');
@@ -194,6 +230,10 @@ Route::post('ajax/dashboard/changeStatus', [AjaxDashboard::class, 'changeStatus'
 Route::post('ajax/dashboard/changeStatusAll', [AjaxDashboard::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll');
 Route::get('ajax/attribute/getAttribute', [AjaxAttribute::class, 'getAttribute'])->name('ajax.attribute.getAttribute');
 Route::get('ajax/attribute/loadAttribute', [AjaxAttribute::class, 'loadAttribute'])->name('ajax.attribute.loadAttribute');
+Route::post('ajax/menu/createCatalogue', [AjaxMenuController::class, 'createCatalogue'])->name('ajax.menu.createCatalogue');
+Route::get('ajax/dashboard/getMenu', [AjaxDashboard::class, 'getMenu'])->name('ajax.menu.getMenu');
+Route::post('ajax/menu/drag', [AjaxMenuController::class, 'drag'])->name('ajax.menu.drag');
+Route::get('ajax/dashboard/getWidgetSearchResults', [AjaxDashboard::class, 'getWidgetSearchResults'])->name('ajax.widget.search');
 
 
 // AuthAuth

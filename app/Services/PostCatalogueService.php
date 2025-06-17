@@ -88,7 +88,7 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
                 // die();
 
                 // dd($payloadLanguage);
-                $this->createRouter($postCatalogue, $request, $this->controllerName);
+                $this->createRouter($postCatalogue, $request, $this->controllerName, $this->currentLanguage());
                 // die();
                 // $this->routerRepository->create($routerPayload);
                 $this->nestedSet();
@@ -114,12 +114,12 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
 
             $postCatalogue = $this->postCatalogueRepository->findById($id);
             $flag = $this->updatePostCatalogue($id, $request);
+
             if ($flag) {
                 $this->updateLanguageForCatalogue($postCatalogue, $request);
             }
 
-            $this->updateRouter($postCatalogue, $request, $this->controllerName);
-
+            $this->updateRouter($postCatalogue, $request, $this->controllerName, $this->currentLanguage());
 
 
             $this->nestedSet->Get();
@@ -215,6 +215,7 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
         $payload['user_id'] = Auth::id();
         $payload['album'] = json_encode($payload['album']);
         $flag = $this->postCatalogueRepository->update($id, $payload);
+
         return $flag;
     }
 
@@ -235,10 +236,13 @@ class PostCatalogueService  extends BaseService implements PostCatalogueServiceI
     {
 
         $payloadLanguage = $this->formatLanguagePayload($postCatalogue, $request);
+
         // dd($payloadLanguage);
         // dd($payloadLanguage['language_id']);
         $postCatalogue->languages()->detach([$payloadLanguage['language_id'], $postCatalogue->id]);
+
         $translate = $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
+
         // dd($translate);
         return $translate;
     }

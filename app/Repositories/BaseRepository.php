@@ -70,13 +70,14 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function update(int $id = 0, array $payload = [])
     {
-        // echo 1;
-        // die();
         $model = $this->findById($id);
-        return $model->update($payload);
 
-        // Update the model instance with the provided data
+        if ($model) {
+            $model->update($payload);
+        }
+        return $model;
     }
+
 
     public function all(array $relation = [])
     {
@@ -85,7 +86,13 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function findById(int $model_id,  array $column = ['*'], array $relation = [])
     {
-        return $this->model->select($column)->with($relation)->findOrFail($model_id);
+
+        return $this->model->select($column)->with($relation)->find($model_id);
+    }
+
+    public function getByLanguageId($languageId)
+    {
+        return $this->model->where('language_id', $languageId)->get();
     }
 
     public function delete(int $id = 0)
@@ -101,17 +108,39 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model->whereIn($whereInField, $whereIn)->update($payload);
     }
 
-    public function findByCondition(array $condition = [])
+    public function findByCondition(array $condition = [], $flag = false, $relation = [], $orderBy = '', $direction = '')
     {
-
         $query = $this->model->newQuery();
-        // dd($condition);
-        foreach ($condition as $key => $val) {
-            // dd($val[0]);
-            $query->where($val[0], $val[1], $val[2]);
+
+        // Sửa: Kiểm tra mảng có phần tử hay không thay vì isset
+        if (!empty($condition)) {
+            foreach ($condition as $val) {
+                $query->where($val[0], $val[1], $val[2]);
+            }
         }
 
-        return $query->first();
+        $query->with($relation);
+
+        if (!empty($orderBy)) {
+            $query->orderBy($orderBy, $direction);
+        }
+
+        // dd($query->toSql(), $query->getBindings());
+        return $flag ? $query->get() : $query->first();
+    }
+
+    public function findByLanguageAndKeyword($languageId, $keyword, $relationTable = '', $flag = false)
+    {
+        $query = $this->model->newQuery();
+
+        $query->whereHas('languages', function ($q) use ($languageId, $keyword, $relationTable) {
+            $q->where('language_id', $languageId);
+            $q->where($relationTable . '.name', 'LIKE', '%' . $keyword . '%');
+        });
+
+        $query->with(['languages']);
+
+        return ($flag) ? $query->first() : $query->get();
     }
 
     public function forceDelete(int $id = 0)
@@ -133,6 +162,14 @@ class BaseRepository implements BaseRepositoryInterface
 
         return $model->{$relation}()->attach($model->id, $payload);
     }
+
+    public function updateOrInsert(array $payload = [], $condition = [])
+    {
+        // dd($payload);
+        $model = $this->model->updateOrCreate($condition, $payload);
+        return $model;
+    }
+
     public function createTranslatePivot($model, array $payload = [], string $relation = '', string $relation_id = '')
     {
         // dd($model->{$relation}()->attach($relation_id, $payload));

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Interfaces\BaseServiceInterface;
 use App\Services\Interfaces\LanguageServiceInterface as LanguageService;
 use App\Repositories\Interfaces\BaseRepositoryInterface as BaseRepository;
-// use App\Repositories\LanguageRepository as LanguageRepository;
+use App\Repositories\LanguageRepository as LanguageRepository;
 use App\Models\Language;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +71,7 @@ class BaseService  implements BaseServiceInterface
     public function updateRouter($model, $request, $controllerName, $languageId)
     {
         $payload = $this->formatRouterPayload($model, $request, $controllerName, $languageId);
+
         // dd($payload);
         $condition  = [
             ['module_id', '=', $model->id],
@@ -78,8 +79,6 @@ class BaseService  implements BaseServiceInterface
 
         ];
         $router = $this->routerRepository->findByCondition($condition);
-        // die();
-
         $res = $this->routerRepository->update($router->id, $payload);
         return $res;
     }
